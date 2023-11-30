@@ -1,0 +1,20 @@
+# Node artifact files
+node_modules/
+package-lock.json
+
+# JetBrains IDE
+.idea/
+
+# Build files
+./metadata/
+./styles*
+./types*
+./index*
+
+# Pycache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Tarballs
+*.tgz
