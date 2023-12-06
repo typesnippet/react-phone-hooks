@@ -1,13 +1,5 @@
-export default (cssText: string) => {
-	/** Inject the given `cssText` in the document head */
-	const style = document.createElement("style");
-	style.setAttribute("type", "text/css");
+import {jsonToCss,} from "../phone-hooks/styles";
+import phoneStyles from "./resources/stylesheet.json";
+import flagsStyles from "../phone-hooks/resources/stylesheet.json";
 
-	if ((style as any).styleSheet) {
-		(style as any).styleSheet.cssText = cssText;
-	} else {
-		style.appendChild(document.createTextNode(cssText));
-	}
-
-	document.head.appendChild(style);
-}
+export const mergedStyles = () => jsonToCss(Object.assign(phoneStyles, flagsStyles));

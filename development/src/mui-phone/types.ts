@@ -1,14 +1,7 @@
 import {ChangeEvent, KeyboardEvent} from "react";
 import {TextFieldProps} from "@mui/material/TextField";
 
-export interface PhoneNumber {
-	countryCode?: number | null;
-	areaCode?: string | null;
-	phoneNumber?: string | null;
-	isoCode?: string;
-
-	valid?(strict?: boolean): boolean;
-}
+import {PhoneNumber} from "../phone-hooks/types";
 
 export interface PhoneInputProps extends Omit<TextFieldProps, "onChange"> {
 	value?: PhoneNumber | string;
