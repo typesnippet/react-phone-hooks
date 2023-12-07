@@ -1,8 +1,8 @@
 import {useCallback, useMemo, useState} from "react";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {Button, Container, CssBaseline} from "@mui/material";
+import {Button, Container, CssBaseline, TextField} from "@mui/material";
 
-import CustomInput from "./mui-phone";
+import PhoneInput from "./mui-phone";
 
 const Demo = () => {
 	const [value, setValue] = useState({});
@@ -29,13 +29,14 @@ const Demo = () => {
                         </pre>
 					)}
 					<form noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
-						<CustomInput
+						<PhoneInput
 							enableSearch
 							error={error}
 							variant="filled"
 							searchVariant="standard"
 							onChange={(e) => setValue(e as any)}
 						/>
+						<TextField variant="filled" style={{marginTop: "1.5rem"}}/>
 						<div style={{display: "flex", gap: 24, marginTop: "1rem"}}>
 							<Button type="reset">Reset Value</Button>
 							<Button onClick={handleThemeChange}>Change Theme</Button>
