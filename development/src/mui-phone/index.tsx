@@ -1,26 +1,22 @@
 import {ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {InputAdornment, MenuItem, Select, TextField} from "@mui/material";
 
-import {PhoneInputProps} from "./types";
-import {PhoneNumber} from "../phone-hooks/types";
-
-import {mergedStyles} from "./styles";
-import {injectStyles} from "../phone-hooks/styles";
-
 import {
 	checkValidity,
 	cleanInput,
 	displayFormat,
+	getCountry,
 	getDefaultISO2Code,
 	getMetadata,
 	getRawValue,
 	parsePhoneNumber,
 	usePhone,
-} from "../phone-hooks";
+} from "react-phone-hooks";
 
-import countries from "../phone-hooks/metadata/countries.json";
+import {injectMergedStyles} from "./styles";
+import {PhoneInputProps, PhoneNumber} from "./types";
 
-injectStyles(mergedStyles());
+injectMergedStyles();
 
 const PhoneInput = ({
 						value: initialValue = "",
@@ -68,7 +64,7 @@ const PhoneInput = ({
 
 	const selectValue = useMemo(() => {
 		let metadata = getMetadata(getRawValue(value), countriesList);
-		metadata = metadata || countries.find(([iso]) => iso === countryCode);
+		metadata = metadata || getCountry(countryCode as any);
 		return ({...metadata})?.[0] + ({...metadata})?.[2];
 	}, [countriesList, countryCode, value])
 

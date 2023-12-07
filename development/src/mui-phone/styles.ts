@@ -1,5 +1,6 @@
-import {jsonToCss,} from "../phone-hooks/styles";
-import phoneStyles from "./resources/stylesheet.json";
-import flagsStyles from "../phone-hooks/resources/stylesheet.json";
+import {injectStyles, jsonToCss} from "react-phone-hooks/styles";
+import commonStyles from "react-phone-hooks/stylesheet.json";
 
-export const mergedStyles = () => jsonToCss(Object.assign(phoneStyles, flagsStyles));
+import customStyles from "./resources/stylesheet.json";
+
+export const injectMergedStyles = () => injectStyles(jsonToCss(Object.assign(commonStyles, customStyles)));

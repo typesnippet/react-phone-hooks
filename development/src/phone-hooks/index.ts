@@ -17,6 +17,10 @@ export const getMetadata = (rawValue: string, countriesList: typeof countries = 
 	return countriesList.find((c) => rawValue.startsWith(c[2]));
 }
 
+export const getCountry = (countryCode: keyof typeof countries) => {
+	return countries.find(([iso]) => iso === countryCode);
+}
+
 export const getRawValue = (value: PhoneNumber | string) => {
 	if (typeof value === "string") return value.replaceAll(/\D/g, "");
 	return [value?.countryCode, value?.areaCode, value?.phoneNumber].filter(Boolean).join("");
