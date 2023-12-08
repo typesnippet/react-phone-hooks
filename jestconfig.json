@@ -1,0 +1,14 @@
+{
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "testRegex": "/tests/.*\\.test\\.(tsx?)$",
+  "moduleFileExtensions": [
+    "ts",
+    "js",
+    "tsx",
+    "json",
+    "node"
+  ],
+  "testEnvironment": "jsdom"
+}

@@ -59,14 +59,19 @@
     "rename": "bash -c 'for file in *.js; do mv $file \"${file%.js}.$0.js\"; done'",
     "build": "tsc --module commonjs && npm run rename -- cjs && tsc --declaration",
     "prebuild": "rm -r metadata stylesheet.json index* types* styles* || true",
-    "postbuild": "cp resources/stylesheet.json stylesheet.json"
+    "postbuild": "cp resources/stylesheet.json stylesheet.json",
+    "test": "jest --config jestconfig.json"
   },
   "license": "MIT",
   "peerDependencies": {
     "react": ">=16"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.7",
     "@types/react": "^18.2.34",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.1.1",
     "tslib": "^2.6.2",
     "tsx": "^3.12.10",
     "typescript": "^5.2.2"
