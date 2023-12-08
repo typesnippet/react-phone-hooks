@@ -1,6 +1,7 @@
 import {useState} from "react";
 import Form from "antd/es/form";
 import theme from "antd/es/theme";
+import Input from "antd/es/input";
 import Button from "antd/es/button";
 import Card from "antd/es/card/Card";
 import FormItem from "antd/es/form/FormItem";
@@ -46,6 +47,9 @@ const AntDemo = () => {
 					<Form>
 						<FormItem name="phone" rules={[{validator}]}>
 							<PhoneInput enableSearch onChange={(e) => setValue(e as any)}/>
+						</FormItem>
+						<FormItem name="test">
+							<Input/>
 						</FormItem>
 						<div style={{display: "flex", gap: 24}}>
 							<Button htmlType="reset">Reset Value</Button>
