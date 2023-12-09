@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import {checkValidity, getFormattedNumber, getMetadata, parsePhoneNumber} from "../src";
+import {checkValidity, getFormattedNumber, getMetadata, getRawValue, parsePhoneNumber} from "../src";
 
 describe("Verifying the basic functionality", () => {
 	it("Check the basic back-forward utilities", () => {
@@ -8,11 +8,13 @@ describe("Verifying the basic functionality", () => {
 		const metadata = getMetadata(rawValue);
 
 		const formattedNumber = getFormattedNumber(rawValue, (metadata as any)[3]);
-		const phoneNumber = parsePhoneNumber(formattedNumber);
+		const parsedPhoneNumber = parsePhoneNumber(formattedNumber);
+		const rawPhoneNumber = getRawValue(formattedNumber);
 
 		assert(formattedNumber !== null && formattedNumber === "+1 (702) 123 4567");
-		assert(phoneNumber !== null && phoneNumber.countryCode === 1);
-		assert(phoneNumber.areaCode === "702" && phoneNumber.phoneNumber === "1234567");
+		assert(parsedPhoneNumber !== null && parsedPhoneNumber.countryCode === 1);
+		assert(parsedPhoneNumber.areaCode === "702" && parsedPhoneNumber.phoneNumber === "1234567");
+		assert(rawPhoneNumber === rawValue);
 	})
 
 	it("Check the phone number validity", () => {
