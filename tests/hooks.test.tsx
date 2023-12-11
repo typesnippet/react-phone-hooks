@@ -1,4 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
+import {act, renderHook} from "@testing-library/react";
 
 import {displayFormat, getRawValue, parsePhoneNumber, usePhone} from "../src";
 
@@ -65,4 +66,19 @@ const usePhoneTester = ({
 }
 
 describe("Verifying the functionality of hooks", () => {
+	it("Check the usePhone hook initiation and updates", () => {
+		const {result} = renderHook(usePhoneTester, {
+			initialProps: {
+				initialValue: "37411111111",
+			}
+		});
+		expect(result.current.value).toBe("+374 (11) 111 111");
+		expect((result.current.metadata as any)[0]).toBe("am");
+
+		act(() => result.current.update("1"));
+		act(() => result.current.update("1111"));
+
+		expect(result.current.value).toBe("+1 (111)");
+		expect((result.current.metadata as any)[0]).toBe("us");
+	})
 })
