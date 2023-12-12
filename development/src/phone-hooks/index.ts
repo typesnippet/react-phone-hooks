@@ -27,12 +27,18 @@ export const getRawValue = (value: PhoneNumber | string) => {
 }
 
 export const displayFormat = (value: string) => {
+	/** Returns the formatted value that can be displayed as an actual input value */
 	return value.replace(/[.\s\D]+$/, "").replace(/(\(\d+)$/, "$1)");
 }
 
 export const cleanInput = (input: any, pattern: string) => {
 	input = input.match(/\d/g) || [];
 	return Array.from(pattern, c => input[0] === c || slots.has(c) ? input.shift() || c : c);
+}
+
+export const getFormattedNumber = (rawValue: any, pattern: string) => {
+	/** Returns the reformatted input value based on the given pattern */
+	return displayFormat(cleanInput(rawValue, pattern.replaceAll(/\d/g, ".")).join(""));
 }
 
 export const checkValidity = (metadata: PhoneNumber, strict: boolean = false) => {
@@ -134,11 +140,11 @@ export const usePhone = ({
 			i = clean(target.value.slice(0, i)).findIndex(c => slots.has(c));
 			return i < 0 ? prev[prev.length - 1] : backRef.current ? prev[i - 1] || first : i;
 		});
-		target.value = displayFormat(clean(target.value).join(""));
+		target.value = getFormattedNumber(target.value, pattern);
 		target.setSelectionRange(i, j);
 		backRef.current = false;
 		setValue(target.value);
-	}, [clean, first, prev])
+	}, [clean, first, pattern, prev])
 
 	return {
 		clean,
