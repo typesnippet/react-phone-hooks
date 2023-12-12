@@ -114,4 +114,22 @@ describe("Verifying the functionality of hooks", () => {
 
 		expect((result.current.metadata as any)[0]).toBe("am");
 	})
+
+	it("Check usePhone for country detection", () => {
+		const {result} = renderHook(usePhoneTester, {
+			initialProps: {}
+		});
+
+		act(() => result.current.update("1"));
+
+		expect((result.current.metadata as any)[0]).toBe("us");
+
+		act(() => result.current.update("1204"));
+
+		expect((result.current.metadata as any)[0]).toBe("ca");
+
+		act(() => result.current.backspace());
+
+		expect((result.current.metadata as any)[0]).toBe("us");
+	})
 })
