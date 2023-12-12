@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ 16.x, 18.x, 20.x ]
-        react-version: [ rc15, rc16, rc17, rc18 ]
+        react-version: [ rc16, rc17, rc18 ]
 
     steps:
       - name: Checkout
