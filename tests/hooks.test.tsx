@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {act, renderHook} from "@testing-library/react";
 
-import {displayFormat, getRawValue, parsePhoneNumber, usePhone} from "../src";
+import {cleanInput, displayFormat, getRawValue, parsePhoneNumber, usePhone} from "../src";
 
 const usePhoneTester = ({
 							country = "us",
@@ -47,7 +47,11 @@ const usePhoneTester = ({
 
 	const search = useCallback(setQuery, []);
 
-	const select = useCallback(setCountryCode, []);
+	const select = useCallback((isoCode: string) => {
+		const mask = (countriesList.find(([iso]) => iso === isoCode) as any)[3];
+		setValue(displayFormat(cleanInput(mask, mask).join("")));
+		setCountryCode(isoCode);
+	}, [setValue, countriesList]);
 
 	useEffect(() => {
 		if (initiatedRef.current) return;
@@ -80,5 +84,34 @@ describe("Verifying the functionality of hooks", () => {
 
 		expect(result.current.value).toBe("+1 (111)");
 		expect((result.current.metadata as any)[0]).toBe("us");
+	})
+
+	it("Check usePhone for country code update", () => {
+		const {result} = renderHook(usePhoneTester, {
+			initialProps: {
+				initialValue: "17021234567",
+			}
+		});
+		expect(result.current.value).toBe("+1 (702) 123 4567");
+		expect((result.current.metadata as any)[0]).toBe("us");
+
+		act(() => result.current.select("ua"));
+
+		expect(result.current.value).toBe("+380");
+		expect((result.current.metadata as any)[0]).toBe("ua");
+	})
+
+	it("Check usePhone for searching a country", () => {
+		const {result} = renderHook(usePhoneTester, {
+			initialProps: {}
+		});
+
+		act(() => result.current.search("Armenia"));
+
+		expect(result.current.countriesList).toHaveLength(1);
+
+		act(() => result.current.select(result.current.countriesList[0][0]));
+
+		expect((result.current.metadata as any)[0]).toBe("am");
 	})
 })
