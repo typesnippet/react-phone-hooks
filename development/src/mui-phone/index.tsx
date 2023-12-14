@@ -1,4 +1,4 @@
-import {ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {ChangeEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {InputAdornment, MenuItem, Select, TextField} from "@mui/material";
 
 import {
@@ -18,7 +18,7 @@ import {PhoneInputProps, PhoneNumber} from "./types";
 
 injectMergedStyles();
 
-const PhoneInput = ({
+const PhoneInput = forwardRef(({
 						value: initialValue = "",
 						variant = undefined,
 						searchVariant = undefined,
@@ -35,7 +35,7 @@ const PhoneInput = ({
 						onChange: handleChange = () => null,
 						onKeyDown: handleKeyDown = () => null,
 						...muiInputProps
-					}: PhoneInputProps) => {
+					}: PhoneInputProps, ref: any) => {
 	searchVariant = searchVariant || variant;
 	const backRef = useRef<boolean>(false);
 	const searchRef = useRef<boolean>(false);
@@ -148,6 +148,7 @@ const PhoneInput = ({
 				</div>
 			</Select>
 			<TextField
+				ref={ref}
 				type="tel"
 				value={value}
 				variant={variant}
@@ -170,6 +171,6 @@ const PhoneInput = ({
 			/>
 		</div>
 	)
-}
+})
 
 export default PhoneInput;

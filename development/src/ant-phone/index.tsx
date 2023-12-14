@@ -1,4 +1,14 @@
-import {ChangeEvent, KeyboardEvent, useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
+import {
+	ChangeEvent,
+	forwardRef,
+	KeyboardEvent,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState
+} from "react";
 import useFormInstance from "antd/es/form/hooks/useFormInstance";
 import {FormContext} from "antd/es/form/context";
 import Select from "antd/es/select";
@@ -21,22 +31,22 @@ import {PhoneInputProps, PhoneNumber} from "./types";
 
 injectMergedStyles();
 
-const PhoneInput = ({
-						value: initialValue = "",
-						country = getDefaultISO2Code(),
-						enableSearch = false,
-						disableDropdown = false,
-						onlyCountries = [],
-						excludeCountries = [],
-						preferredCountries = [],
-						searchNotFound = "No country found",
-						searchPlaceholder = "Search country",
-						onMount: handleMount = () => null,
-						onInput: handleInput = () => null,
-						onChange: handleChange = () => null,
-						onKeyDown: handleKeyDown = () => null,
-						...antInputProps
-					}: PhoneInputProps) => {
+const PhoneInput = forwardRef(({
+								   value: initialValue = "",
+								   country = getDefaultISO2Code(),
+								   enableSearch = false,
+								   disableDropdown = false,
+								   onlyCountries = [],
+								   excludeCountries = [],
+								   preferredCountries = [],
+								   searchNotFound = "No country found",
+								   searchPlaceholder = "Search country",
+								   onMount: handleMount = () => null,
+								   onInput: handleInput = () => null,
+								   onChange: handleChange = () => null,
+								   onKeyDown: handleKeyDown = () => null,
+								   ...antInputProps
+							   }: PhoneInputProps, ref: any) => {
 	const formInstance = useFormInstance();
 	const formContext = useContext(FormContext);
 	const backRef = useRef<boolean>(false);
@@ -164,6 +174,7 @@ const PhoneInput = ({
 		<div className="ant-phone-input-wrapper"
 			 ref={node => setMinWidth(node?.offsetWidth || 0)}>
 			<Input
+				ref={ref}
 				inputMode="tel"
 				value={value}
 				onInput={onInput}
@@ -174,6 +185,6 @@ const PhoneInput = ({
 			/>
 		</div>
 	)
-}
+})
 
 export default PhoneInput;

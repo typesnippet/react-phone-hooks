@@ -33,6 +33,5 @@ export interface PhoneInputProps extends Omit<TextFieldProps, "onChange"> {
 
 	onKeyDown?(event: KeyboardEvent<HTMLInputElement>): void;
 
-	/** NOTE: This differs from the antd Input onChange interface */
 	onChange?(value: PhoneNumber, event: ChangeEvent<HTMLInputElement>): void;
 }
