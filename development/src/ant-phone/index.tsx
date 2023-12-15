@@ -1,13 +1,13 @@
 import {
-	ChangeEvent,
-	forwardRef,
-	KeyboardEvent,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState
+    ChangeEvent,
+    forwardRef,
+    KeyboardEvent,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
 } from "react";
 import useFormInstance from "antd/es/form/hooks/useFormInstance";
 import {FormContext} from "antd/es/form/context";
@@ -15,16 +15,18 @@ import Select from "antd/es/select";
 import Input from "antd/es/input";
 
 import {
-	checkValidity,
-	cleanInput,
-	displayFormat,
-	getCountry,
-	getDefaultISO2Code,
-	getMetadata,
-	getRawValue,
-	parsePhoneNumber,
-	usePhone,
-} from "react-phone-hooks";
+    checkValidity,
+    cleanInput,
+    displayFormat,
+    getCountry,
+    getDefaultISO2Code,
+    getFormattedNumber,
+    getMetadata,
+    getRawValue,
+    parsePhoneNumber,
+    useMask,
+    usePhone,
+} from "../phone-hooks";
 
 import {injectMergedStyles} from "./styles";
 import {PhoneInputProps, PhoneNumber} from "./types";
@@ -32,159 +34,163 @@ import {PhoneInputProps, PhoneNumber} from "./types";
 injectMergedStyles();
 
 const PhoneInput = forwardRef(({
-								   value: initialValue = "",
-								   country = getDefaultISO2Code(),
-								   enableSearch = false,
-								   disableDropdown = false,
-								   onlyCountries = [],
-								   excludeCountries = [],
-								   preferredCountries = [],
-								   searchNotFound = "No country found",
-								   searchPlaceholder = "Search country",
-								   onMount: handleMount = () => null,
-								   onInput: handleInput = () => null,
-								   onChange: handleChange = () => null,
-								   onKeyDown: handleKeyDown = () => null,
-								   ...antInputProps
-							   }: PhoneInputProps, ref: any) => {
-	const formInstance = useFormInstance();
-	const formContext = useContext(FormContext);
-	const backRef = useRef<boolean>(false);
-	const initiatedRef = useRef<boolean>(false);
-	const [query, setQuery] = useState<string>("");
-	const [minWidth, setMinWidth] = useState<number>(0);
-	const [countryCode, setCountryCode] = useState<string>(country);
+                                   value: initialValue = "",
+                                   country = getDefaultISO2Code(),
+                                   enableSearch = false,
+                                   disableDropdown = false,
+                                   onlyCountries = [],
+                                   excludeCountries = [],
+                                   preferredCountries = [],
+                                   searchNotFound = "No country found",
+                                   searchPlaceholder = "Search country",
+                                   onMount: handleMount = () => null,
+                                   onInput: handleInput = () => null,
+                                   onChange: handleChange = () => null,
+                                   onKeyDown: handleKeyDown = () => null,
+                                   ...antInputProps
+                               }: PhoneInputProps, ref: any) => {
+    const formInstance = useFormInstance();
+    const formContext = useContext(FormContext);
+    const initiatedRef = useRef<boolean>(false);
+    const [query, setQuery] = useState<string>("");
+    const [minWidth, setMinWidth] = useState<number>(0);
+    const [countryCode, setCountryCode] = useState<string>(country);
 
-	const {
-		clean,
-		value,
-		format,
-		metadata,
-		setValue,
-		countriesList,
-	} = usePhone({
-		query,
-		country,
-		countryCode,
-		initialValue,
-		onlyCountries,
-		excludeCountries,
-		preferredCountries,
-	});
+    const {
+        value,
+        pattern,
+        metadata,
+        setValue,
+        countriesList,
+    } = usePhone({
+        query,
+        country,
+        countryCode,
+        initialValue,
+        onlyCountries,
+        excludeCountries,
+        preferredCountries,
+    });
 
-	const selectValue = useMemo(() => {
-		let metadata = getMetadata(getRawValue(value), countriesList);
-		metadata = metadata || getCountry(countryCode as any);
-		return ({...metadata})?.[0] + ({...metadata})?.[2];
-	}, [countriesList, countryCode, value])
+    const {
+        onInput: onInputMaskHandler,
+        onKeyDown: onKeyDownMaskHandler,
+    } = useMask(pattern);
 
-	const setFieldValue = useCallback((value: PhoneNumber) => {
-		if (formInstance) {
-			let namePath = [];
-			let formName = (formContext as any)?.name || "";
-			let fieldName = (antInputProps as any)?.id || "";
-			if (formName) {
-				namePath.push(formName);
-				fieldName = fieldName.slice(formName.length + 1);
-			}
-			formInstance.setFieldValue(namePath.concat(fieldName.split("_")), value);
-		}
-	}, [antInputProps, formContext, formInstance])
+    const selectValue = useMemo(() => {
+        let metadata = getMetadata(getRawValue(value), countriesList);
+        metadata = metadata || getCountry(countryCode as any);
+        return ({...metadata})?.[0] + ({...metadata})?.[2];
+    }, [countriesList, countryCode, value])
 
-	const onKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
-		backRef.current = event.key === "Backspace";
-		handleKeyDown(event);
-	}, [handleKeyDown])
+    const setFieldValue = useCallback((value: PhoneNumber) => {
+        if (formInstance) {
+            let namePath = [];
+            let formName = (formContext as any)?.name || "";
+            let fieldName = (antInputProps as any)?.id || "";
+            if (formName) {
+                namePath.push(formName);
+                fieldName = fieldName.slice(formName.length + 1);
+            }
+            formInstance.setFieldValue(namePath.concat(fieldName.split("_")), value);
+        }
+    }, [antInputProps, formContext, formInstance])
 
-	const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-		const formattedNumber = displayFormat(clean(event.target.value).join(""));
-		const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
-		handleChange({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)}, event);
-	}, [clean, countriesList, handleChange])
+    const onKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+        onKeyDownMaskHandler(event);
+        handleKeyDown(event);
+    }, [handleKeyDown, onKeyDownMaskHandler])
 
-	const onInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-		handleInput(event);
-		format(event);
-	}, [format, handleInput])
+    const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        const formattedNumber = getFormattedNumber(event.target.value, pattern);
+        const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
+        setValue(formattedNumber);
+        handleChange({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)}, event);
+    }, [countriesList, handleChange, pattern, setValue])
 
-	const onMount = useCallback((value: PhoneNumber) => {
-		setFieldValue(value);
-		handleMount(value);
-	}, [handleMount, setFieldValue])
+    const onInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        onInputMaskHandler(event);
+        handleInput(event);
+    }, [onInputMaskHandler, handleInput])
 
-	useEffect(() => {
-		if (initiatedRef.current) return;
-		initiatedRef.current = true;
-		let initialValue = getRawValue(value);
-		if (!initialValue.startsWith(metadata?.[2] as string)) {
-			initialValue = metadata?.[2] as string;
-		}
-		const formattedNumber = displayFormat(clean(initialValue).join(""));
-		const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
-		onMount({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)});
-		setCountryCode(phoneMetadata.isoCode as any);
-		setValue(formattedNumber);
-	}, [clean, countriesList, metadata, onMount, setValue, value])
+    const onMount = useCallback((value: PhoneNumber) => {
+        setFieldValue(value);
+        handleMount(value);
+    }, [handleMount, setFieldValue])
 
-	const countriesSelect = useMemo(() => (
-		<Select
-			suffixIcon={null}
-			value={selectValue}
-			open={disableDropdown ? false : undefined}
-			onSelect={(selectedOption, {key}) => {
-				const [_, mask] = key.split("_");
-				if (selectValue === selectedOption) return;
-				const selectedCountryCode = selectedOption.slice(0, 2);
-				const formattedNumber = displayFormat(cleanInput(mask, mask).join(""));
-				const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList, selectedCountryCode);
-				setFieldValue({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)});
-				setCountryCode(selectedCountryCode);
-				setValue(formattedNumber);
-			}}
-			optionLabelProp="label"
-			dropdownStyle={{minWidth}}
-			notFoundContent={searchNotFound}
-			dropdownRender={(menu) => (
-				<div className="ant-phone-input-search-wrapper">
-					{enableSearch && (
-						<Input
-							placeholder={searchPlaceholder}
-							onInput={({target}: any) => setQuery(target.value)}
-						/>
-					)}
-					{menu}
-				</div>
-			)}
-		>
-			{countriesList.map(([iso, name, dial, mask]) => (
-				<Select.Option
-					value={iso + dial}
-					key={`${iso}_${mask}`}
-					label={<div className={`flag ${iso}`}/>}
-					children={<div className="ant-phone-input-select-item">
-						<div className={`flag ${iso}`}/>
-						{name}&nbsp;{displayFormat(mask)}
-					</div>}
-				/>
-			))}
-		</Select>
-	), [selectValue, disableDropdown, minWidth, searchNotFound, countriesList, setFieldValue, setValue, enableSearch, searchPlaceholder])
+    useEffect(() => {
+        if (initiatedRef.current) return;
+        initiatedRef.current = true;
+        let initialValue = getRawValue(value);
+        if (!initialValue.startsWith(metadata?.[2] as string)) {
+            initialValue = metadata?.[2] as string;
+        }
+        const formattedNumber = getFormattedNumber(initialValue, pattern);
+        const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
+        onMount({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)});
+        setCountryCode(phoneMetadata.isoCode as any);
+        setValue(formattedNumber);
+    }, [countriesList, metadata, onMount, pattern, setValue, value])
 
-	return (
-		<div className="ant-phone-input-wrapper"
-			 ref={node => setMinWidth(node?.offsetWidth || 0)}>
-			<Input
-				ref={ref}
-				inputMode="tel"
-				value={value}
-				onInput={onInput}
-				onChange={onChange}
-				onKeyDown={onKeyDown}
-				addonBefore={countriesSelect}
-				{...antInputProps}
-			/>
-		</div>
-	)
+    const countriesSelect = useMemo(() => (
+        <Select
+            suffixIcon={null}
+            value={selectValue}
+            open={disableDropdown ? false : undefined}
+            onSelect={(selectedOption, {key}) => {
+                const [_, mask] = key.split("_");
+                if (selectValue === selectedOption) return;
+                const selectedCountryCode = selectedOption.slice(0, 2);
+                const formattedNumber = displayFormat(cleanInput(mask, mask).join(""));
+                const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList, selectedCountryCode);
+                setFieldValue({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)});
+                setCountryCode(selectedCountryCode);
+                setValue(formattedNumber);
+            }}
+            optionLabelProp="label"
+            dropdownStyle={{minWidth}}
+            notFoundContent={searchNotFound}
+            dropdownRender={(menu) => (
+                <div className="ant-phone-input-search-wrapper">
+                    {enableSearch && (
+                        <Input
+                            placeholder={searchPlaceholder}
+                            onInput={({target}: any) => setQuery(target.value)}
+                        />
+                    )}
+                    {menu}
+                </div>
+            )}
+        >
+            {countriesList.map(([iso, name, dial, mask]) => (
+                <Select.Option
+                    value={iso + dial}
+                    key={`${iso}_${mask}`}
+                    label={<div className={`flag ${iso}`}/>}
+                    children={<div className="ant-phone-input-select-item">
+                        <div className={`flag ${iso}`}/>
+                        {name}&nbsp;{displayFormat(mask)}
+                    </div>}
+                />
+            ))}
+        </Select>
+    ), [selectValue, disableDropdown, minWidth, searchNotFound, countriesList, setFieldValue, setValue, enableSearch, searchPlaceholder])
+
+    return (
+        <div className="ant-phone-input-wrapper"
+             ref={node => setMinWidth(node?.offsetWidth || 0)}>
+            <Input
+                ref={ref}
+                inputMode="tel"
+                value={value}
+                onInput={onInput}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                addonBefore={countriesSelect}
+                {...antInputProps}
+            />
+        </div>
+    )
 })
 
 export default PhoneInput;

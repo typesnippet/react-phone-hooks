@@ -12,54 +12,54 @@ import PhoneInput from "./ant-phone";
 import "antd/dist/reset.css";
 
 const AntDemo = () => {
-	const [value, setValue] = useState({});
-	const [algorithm, setAlgorithm] = useState("defaultAlgorithm");
+    const [value, setValue] = useState({});
+    const [algorithm, setAlgorithm] = useState("defaultAlgorithm");
 
-	const validator = (_: any, {valid}: any) => {
-		if (valid()) {
-			return Promise.resolve();
-		}
-		return Promise.reject("Invalid phone number");
-	}
+    const validator = (_: any, {valid}: any) => {
+        if (valid()) {
+            return Promise.resolve();
+        }
+        return Promise.reject("Invalid phone number");
+    }
 
-	const changeTheme = () => {
-		if (algorithm === "defaultAlgorithm") {
-			setAlgorithm("darkAlgorithm");
-		} else {
-			setAlgorithm("defaultAlgorithm");
-		}
-	}
+    const changeTheme = () => {
+        if (algorithm === "defaultAlgorithm") {
+            setAlgorithm("darkAlgorithm");
+        } else {
+            setAlgorithm("defaultAlgorithm");
+        }
+    }
 
-	return (
-		<ConfigProvider
-			theme={{algorithm: algorithm === "defaultAlgorithm" ? theme.defaultAlgorithm : theme.darkAlgorithm}}>
-			<Card style={{height: "100%", borderRadius: 0, border: "none"}} bodyStyle={{padding: 0}}>
-				<div style={{margin: 20, maxWidth: 400}}>
-					{value && (
-						<pre style={{
-							background: algorithm === "defaultAlgorithm" ? "#efefef" : "#1f1f1f",
-							color: algorithm === "defaultAlgorithm" ? "#1f1f1f" : "#efefef",
-							padding: 10, marginBottom: 24,
-						}}>
+    return (
+        <ConfigProvider
+            theme={{algorithm: algorithm === "defaultAlgorithm" ? theme.defaultAlgorithm : theme.darkAlgorithm}}>
+            <Card style={{height: "100%", borderRadius: 0, border: "none"}} bodyStyle={{padding: 0}}>
+                <div style={{margin: 20, maxWidth: 400}}>
+                    {value && (
+                        <pre style={{
+                            background: algorithm === "defaultAlgorithm" ? "#efefef" : "#1f1f1f",
+                            color: algorithm === "defaultAlgorithm" ? "#1f1f1f" : "#efefef",
+                            padding: 10, marginBottom: 24,
+                        }}>
                             {JSON.stringify(value, null, 2)}
                         </pre>
-					)}
-					<Form>
-						<FormItem name="phone" rules={[{validator}]}>
-							<PhoneInput enableSearch onChange={(e) => setValue(e as any)}/>
-						</FormItem>
-						<FormItem name="test">
-							<Input/>
-						</FormItem>
-						<div style={{display: "flex", gap: 24}}>
-							<Button htmlType="reset">Reset Value</Button>
-							<Button onClick={changeTheme}>Change Theme</Button>
-						</div>
-					</Form>
-				</div>
-			</Card>
-		</ConfigProvider>
-	)
+                    )}
+                    <Form>
+                        <FormItem name="phone" rules={[{validator}]}>
+                            <PhoneInput enableSearch onChange={(e) => setValue(e as any)}/>
+                        </FormItem>
+                        <FormItem name="test">
+                            <Input/>
+                        </FormItem>
+                        <div style={{display: "flex", gap: 24}}>
+                            <Button htmlType="reset">Reset Value</Button>
+                            <Button onClick={changeTheme}>Change Theme</Button>
+                        </div>
+                    </Form>
+                </div>
+            </Card>
+        </ConfigProvider>
+    )
 }
 
 export default AntDemo;

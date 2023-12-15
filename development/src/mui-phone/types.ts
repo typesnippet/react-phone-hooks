@@ -5,33 +5,33 @@ import {TextFieldProps} from "@mui/material/TextField";
 export type PhoneNumber = types.PhoneNumber;
 
 export interface PhoneInputProps extends Omit<TextFieldProps, "onChange"> {
-	value?: PhoneNumber | string;
+    value?: PhoneNumber | string;
 
-	variant?: "outlined" | "filled" | "standard";
+    variant?: "outlined" | "filled" | "standard";
 
-	searchVariant?: "outlined" | "filled" | "standard";
+    searchVariant?: "outlined" | "filled" | "standard";
 
-	country?: string;
+    country?: string;
 
-	enableSearch?: boolean;
+    enableSearch?: boolean;
 
-	searchNotFound?: string;
+    searchNotFound?: string;
 
-	searchPlaceholder?: string;
+    searchPlaceholder?: string;
 
-	disableDropdown?: boolean;
+    disableDropdown?: boolean;
 
-	onlyCountries?: string[];
+    onlyCountries?: string[];
 
-	excludeCountries?: string[];
+    excludeCountries?: string[];
 
-	preferredCountries?: string[];
+    preferredCountries?: string[];
 
-	onMount?(value: PhoneNumber): void;
+    onMount?(value: PhoneNumber): void;
 
-	onInput?(event: ChangeEvent<HTMLInputElement>): void;
+    onInput?(event: ChangeEvent<HTMLInputElement>): void;
 
-	onKeyDown?(event: KeyboardEvent<HTMLInputElement>): void;
+    onKeyDown?(event: KeyboardEvent<HTMLInputElement>): void;
 
-	onChange?(value: PhoneNumber, event: ChangeEvent<HTMLInputElement>): void;
+    onChange?(value: PhoneNumber, event: ChangeEvent<HTMLInputElement>): void;
 }
