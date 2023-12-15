@@ -81,6 +81,7 @@ const PhoneInput = forwardRef(({
     const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         const formattedNumber = getFormattedNumber(event.target.value, pattern);
         const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
+        setCountryCode(phoneMetadata.isoCode as any);
         setValue(formattedNumber);
         handleChange({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)}, event);
     }, [countriesList, handleChange, pattern, setValue])
@@ -136,6 +137,7 @@ const PhoneInput = forwardRef(({
                             key={iso + mask}
                             value={iso + dial}
                             style={{maxWidth}}
+                            selected={selectValue === iso + dial}
                             onClick={() => {
                                 const selectedOption = iso + dial;
                                 if (selectValue === selectedOption) return;
