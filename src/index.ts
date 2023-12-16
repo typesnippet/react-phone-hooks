@@ -1,4 +1,4 @@
-import {ChangeEvent, useCallback, useMemo, useRef, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useCallback, useMemo, useRef, useState} from "react";
 
 import {PhoneNumber, usePhoneOptions} from "./types";
 
@@ -74,6 +74,43 @@ export const parsePhoneNumber = (formattedNumber: string, countriesList: typeof 
     return {countryCode, areaCode, phoneNumber, isoCode};
 }
 
+export const useMask = (pattern: string) => {
+    const backRef = useRef<boolean>(false);
+
+    const clean = useCallback((input: any) => {
+        return cleanInput(input, pattern.replaceAll(/\d/g, "."));
+    }, [pattern])
+
+    const first = useMemo(() => {
+        return [...pattern].findIndex(c => slots.has(c));
+    }, [pattern])
+
+    const prev = useMemo((j = 0) => {
+        return Array.from(pattern.replaceAll(/\d/g, "."), (c, i) => {
+            return slots.has(c) ? j = i + 1 : j;
+        });
+    }, [pattern])
+
+    const onKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+        backRef.current = event.key === "Backspace";
+    }, [])
+
+    const onInput = useCallback(({target}: ChangeEvent<HTMLInputElement>) => {
+        const [i, j] = [target.selectionStart, target.selectionEnd].map((i: any) => {
+            i = clean(target.value.slice(0, i)).findIndex(c => slots.has(c));
+            return i < 0 ? prev[prev.length - 1] : backRef.current ? prev[i - 1] || first : i;
+        });
+        target.value = getFormattedNumber(target.value, pattern);
+        target.setSelectionRange(i, j);
+        backRef.current = false;
+    }, [clean, first, pattern, prev])
+
+    return {
+        onInput,
+        onKeyDown,
+    }
+}
+
 export const usePhone = ({
                              query = "",
                              country = "",
@@ -87,7 +124,6 @@ export const usePhone = ({
     const defaultMetadata = getMetadata(defaultValue) || countries.find(([iso]) => iso === country);
     const defaultValueState = defaultValue || countries.find(([iso]) => iso === defaultMetadata?.[0])?.[2] as string;
 
-    const backRef = useRef<boolean>(false);
     const [value, setValue] = useState<string>(defaultValueState);
 
     const countriesOnly = useMemo(() => {
@@ -121,35 +157,9 @@ export const usePhone = ({
         return metadata?.[3] || defaultMetadata?.[3] || "";
     }, [defaultMetadata, metadata])
 
-    const clean = useCallback((input: any) => {
-        return cleanInput(input, pattern.replaceAll(/\d/g, "."));
-    }, [pattern])
-
-    const first = useMemo(() => {
-        return [...pattern].findIndex(c => slots.has(c));
-    }, [pattern])
-
-    const prev = useMemo((j = 0) => {
-        return Array.from(pattern.replaceAll(/\d/g, "."), (c, i) => {
-            return slots.has(c) ? j = i + 1 : j;
-        });
-    }, [pattern])
-
-    const format = useCallback(({target}: ChangeEvent<HTMLInputElement>) => {
-        const [i, j] = [target.selectionStart, target.selectionEnd].map((i: any) => {
-            i = clean(target.value.slice(0, i)).findIndex(c => slots.has(c));
-            return i < 0 ? prev[prev.length - 1] : backRef.current ? prev[i - 1] || first : i;
-        });
-        target.value = getFormattedNumber(target.value, pattern);
-        target.setSelectionRange(i, j);
-        backRef.current = false;
-        setValue(target.value);
-    }, [clean, first, pattern, prev])
-
     return {
-        clean,
         value,
-        format,
+        pattern,
         metadata,
         setValue,
         countriesList,
