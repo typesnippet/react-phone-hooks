@@ -1,7 +1,10 @@
-import {useCallback, useEffect, useRef, useState} from "react";
-import {act, renderHook} from "@testing-library/react";
+import assert from "assert";
 
-import {cleanInput, displayFormat, getRawValue, parsePhoneNumber, usePhone} from "../src";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {act, render, renderHook, screen} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+import {cleanInput, displayFormat, getFormattedNumber, getRawValue, parsePhoneNumber, useMask, usePhone} from "../src";
 
 const usePhoneTester = ({
                             country = "us",
@@ -15,8 +18,8 @@ const usePhoneTester = ({
     const [countryCode, setCountryCode] = useState<string>(country);
 
     const {
-        clean,
         value,
+        pattern,
         metadata,
         setValue,
         countriesList,
@@ -31,15 +34,14 @@ const usePhoneTester = ({
     });
 
     const update = useCallback((value: string) => {
-        const formattedNumber = displayFormat(clean(value).join(""));
+        const formattedNumber = getFormattedNumber(value, pattern);
         const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
         setCountryCode(phoneMetadata.isoCode as any);
         setValue(formattedNumber);
-    }, [clean, countriesList, setValue]);
+    }, [countriesList, pattern, setValue]);
 
     const backspace = useCallback(() => {
-        const rawValue = getRawValue(value);
-        const formattedNumber = displayFormat(rawValue.slice(0, -1));
+        const formattedNumber = displayFormat(getRawValue(value).slice(0, -1));
         const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
         setCountryCode(phoneMetadata.isoCode as any);
         setValue(formattedNumber);
@@ -60,13 +62,17 @@ const usePhoneTester = ({
         if (!initialValue.startsWith(metadata?.[2] as string)) {
             initialValue = metadata?.[2] as string;
         }
-        const formattedNumber = displayFormat(clean(initialValue).join(""));
+        const formattedNumber = getFormattedNumber(initialValue, pattern);
         const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
         setCountryCode(phoneMetadata.isoCode as any);
         setValue(formattedNumber);
-    }, [clean, countriesList, metadata, setValue, value])
+    }, [countriesList, pattern, metadata, setValue, value])
 
     return {update, search, select, value, metadata, backspace, countriesList};
+}
+
+const UseMaskTester = ({pattern = "", ...props}: any) => {
+    return <input data-testid="input" {...useMask(pattern)} {...props}/>;
 }
 
 describe("Verifying the functionality of hooks", () => {
@@ -131,5 +137,17 @@ describe("Verifying the functionality of hooks", () => {
         act(() => result.current.backspace());
 
         expect((result.current.metadata as any)[0]).toBe("us");
+    })
+
+    it("Check useMask for basic use case", async () => {
+        render(<UseMaskTester
+            pattern="+... (..) ... ....."
+            onChange={(e: any) => {
+                const isValid = "+380 (11) 222 34567".startsWith(e.target.value);
+                assert(isValid || "+380 (1)" === e.target.value);
+            }}
+        />);
+
+        await userEvent.type(screen.getByTestId("input"), "3801122234567");
     })
 })
