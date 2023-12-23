@@ -36,9 +36,11 @@ const PhoneInput = forwardRef(({
                                    onChange: handleChange = () => null,
                                    onKeyDown: handleKeyDown = () => null,
                                    ...muiInputProps
-                               }: PhoneInputProps, ref: any) => {
+                               }: PhoneInputProps, forwardedRef: any) => {
     searchVariant = searchVariant || variant;
+    const inputRef = useRef<any>(null);
     const searchRef = useRef<boolean>(false);
+    const selectedRef = useRef<boolean>(false);
     const initiatedRef = useRef<boolean>(false);
     const [query, setQuery] = useState<string>("");
     const [open, setOpen] = useState<boolean>(false);
@@ -78,7 +80,8 @@ const PhoneInput = forwardRef(({
     }, [handleKeyDown, onKeyDownMaskHandler])
 
     const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        const formattedNumber = getFormattedNumber(event.target.value, pattern);
+        const formattedNumber = selectedRef.current ? event.target.value : getFormattedNumber(event.target.value, pattern);
+        selectedRef.current = false;
         const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
         setCountryCode(phoneMetadata.isoCode as any);
         setValue(formattedNumber);
@@ -93,6 +96,13 @@ const PhoneInput = forwardRef(({
     const onMount = useCallback((value: PhoneNumber) => {
         handleMount(value);
     }, [handleMount])
+
+    const ref = useCallback((node: any) => {
+        [forwardedRef, inputRef].forEach((ref) => {
+            if (typeof ref === "function") ref(node);
+            else if (ref != null) ref.current = node;
+        })
+    }, [forwardedRef])
 
     useEffect(() => {
         if (initiatedRef.current) return;
@@ -111,48 +121,51 @@ const PhoneInput = forwardRef(({
     return (
         <div className="mui-phone-input-wrapper"
              ref={node => setMaxWidth(node?.offsetWidth || 0)}>
-            <Select
-                open={open}
-                variant={variant}
-                value={selectValue}
-                onClose={() => setOpen(searchRef.current)}
-                style={{position: "absolute", top: 0, left: 0, visibility: "hidden", width: "100%", zIndex: -1}}
-            >
-                <div className="mui-phone-input-search-wrapper" onKeyDown={(e: any) => e.stopPropagation()}>
-                    {enableSearch && (
-                        <TextField
-                            type="search"
-                            value={query}
-                            variant={searchVariant}
-                            className="mui-phone-input-search"
-                            onChange={(e: any) => setQuery(e.target.value)}
-                            onBlur={() => searchRef.current = false}
-                            onFocus={() => searchRef.current = true}
-                        />
-                    )}
-                    {countriesList.map(([iso, name, dial, mask]) => (
-                        <MenuItem
-                            disableRipple
-                            key={iso + mask}
-                            value={iso + dial}
-                            style={{maxWidth}}
-                            selected={selectValue === iso + dial}
-                            onClick={() => {
-                                const selectedOption = iso + dial;
-                                if (selectValue === selectedOption) return;
-                                setCountryCode(selectedOption.slice(0, 2));
-                                setValue(getFormattedNumber(mask, mask));
-                            }}
-                            children={<div className="mui-phone-input-select-item">
-                                <div className={`flag ${iso}`}/>
-                                <div className="label">
-                                    {name}&nbsp;{displayFormat(mask)}
-                                </div>
-                            </div>}
-                        />
-                    ))}
-                </div>
-            </Select>
+            {!disableDropdown && (
+                <Select
+                    open={open}
+                    variant={variant}
+                    value={selectValue}
+                    onClose={() => setOpen(searchRef.current)}
+                    style={{position: "absolute", top: 0, left: 0, visibility: "hidden", width: "100%", zIndex: -1}}
+                >
+                    <div className="mui-phone-input-search-wrapper" onKeyDown={(e: any) => e.stopPropagation()}>
+                        {enableSearch && (
+                            <TextField
+                                type="search"
+                                value={query}
+                                variant={searchVariant}
+                                placeholder={searchPlaceholder}
+                                className="mui-phone-input-search"
+                                onChange={(e: any) => setQuery(e.target.value)}
+                                onBlur={() => searchRef.current = false}
+                                onFocus={() => searchRef.current = true}
+                            />
+                        )}
+                        {countriesList.length ? countriesList.map(([iso, name, dial, mask]) => (
+                            <MenuItem
+                                disableRipple
+                                key={iso + mask}
+                                value={iso + dial}
+                                style={{maxWidth}}
+                                selected={selectValue === iso + dial}
+                                onClick={() => {
+                                    const selectedOption = iso + dial;
+                                    if (selectValue === selectedOption) return;
+                                    setCountryCode(selectedOption.slice(0, 2));
+                                    setValue(getFormattedNumber(mask, mask));
+                                }}
+                                children={<div className="mui-phone-input-select-item">
+                                    <div className={`flag ${iso}`}/>
+                                    <div className="label">
+                                        {name}&nbsp;{displayFormat(mask)}
+                                    </div>
+                                </div>}
+                            />
+                        )) : <MenuItem disabled>{searchNotFound}</MenuItem>}
+                    </div>
+                </Select>
+            )}
             <TextField
                 ref={ref}
                 type="tel"
