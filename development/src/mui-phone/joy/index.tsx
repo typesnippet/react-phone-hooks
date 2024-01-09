@@ -1,5 +1,5 @@
 import {ChangeEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {InputAdornment, MenuItem, Select, TextField} from "@mui/material";
+import {Input, Option, Select} from "@mui/joy";
 
 import {
     checkValidity,
@@ -12,7 +12,7 @@ import {
     parsePhoneNumber,
     useMask,
     usePhone,
-} from "../phone-hooks";
+} from "../../phone-hooks";
 
 import {injectMergedStyles} from "./styles";
 import {PhoneInputProps, PhoneNumber} from "./types";
@@ -113,15 +113,15 @@ const PhoneInput = forwardRef(({
              ref={node => setMaxWidth(node?.offsetWidth || 0)}>
             {!disableDropdown && (
                 <Select
-                    open={open}
                     variant={variant}
+                    listboxOpen={open}
                     value={selectValue}
                     onClose={() => setOpen(searchRef.current)}
                     style={{position: "absolute", top: 0, left: 0, visibility: "hidden", width: "100%", zIndex: -1}}
                 >
                     <div className="mui-phone-input-search-wrapper" onKeyDown={(e: any) => e.stopPropagation()}>
                         {enableSearch && (
-                            <TextField
+                            <Input
                                 type="search"
                                 value={query}
                                 variant={searchVariant}
@@ -134,12 +134,10 @@ const PhoneInput = forwardRef(({
                         )}
                         <div className="mui-phone-input-search-list">
                             {countriesList.length ? countriesList.map(([iso, name, dial, mask]) => (
-                                <MenuItem
-                                    disableRipple
+                                <Option
                                     key={iso + mask}
-                                    value={iso + dial}
                                     style={{maxWidth}}
-                                    selected={selectValue === iso + dial}
+                                    value={iso + dial}
                                     onClick={() => {
                                         const selectedOption = iso + dial;
                                         if (selectValue === selectedOption) return;
@@ -153,12 +151,12 @@ const PhoneInput = forwardRef(({
                                         </div>
                                     </div>}
                                 />
-                            )) : <MenuItem disabled>{searchNotFound}</MenuItem>}
+                            )) : <Option value="N/A" disabled>{searchNotFound}</Option>}
                         </div>
                     </div>
                 </Select>
             )}
-            <TextField
+            <Input
                 ref={ref}
                 type="tel"
                 value={value}
@@ -166,18 +164,14 @@ const PhoneInput = forwardRef(({
                 onInput={onInput}
                 onChange={onChange}
                 onKeyDown={onKeyDown}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <span
-                                style={{cursor: "pointer"}}
-                                onClick={() => setOpen(!open)}
-                            >
-                                <div className={`flag ${countryCode}`}/>
-                            </span>
-                        </InputAdornment>
-                    )
-                }}
+                startDecorator={(
+                    <span
+                        style={{cursor: "pointer"}}
+                        onClick={() => setOpen(!open)}
+                    >
+                        <div className={`flag ${countryCode}`}/>
+                    </span>
+                )}
                 {...(muiInputProps as any)}
             />
         </div>
