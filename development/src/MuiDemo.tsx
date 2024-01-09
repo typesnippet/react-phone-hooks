@@ -3,6 +3,7 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Button, Container, CssBaseline, TextField} from "@mui/material";
 
 import PhoneInput from "./mui-phone";
+import BasePhoneInput from "./mui-phone/base";
 
 const Demo = () => {
     const [value, setValue] = useState({});
@@ -37,6 +38,11 @@ const Demo = () => {
                             onChange={(e) => setValue(e as any)}
                         />
                         <TextField variant="filled" style={{marginTop: "1.5rem"}}/>
+                        <BasePhoneInput
+                            error={error}
+                            style={{marginTop: "1.5rem"}}
+                            onChange={(e) => setValue(e as any)}
+                        />
                         <div style={{display: "flex", gap: 24, marginTop: "1rem"}}>
                             <Button type="reset">Reset Value</Button>
                             <Button onClick={handleThemeChange}>Change Theme</Button>
