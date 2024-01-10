@@ -10,6 +10,40 @@ This comprehensive toolkit features custom hooks and utility functions tailored 
 and validation. It supports international standards, making it suitable for phone number processing applications across
 different countries and regions.
 
+## Features
+
+- Build a phone number input component with a country selector.
+- Parse the phone metadata and validate phone numbers.
+- Format raw phone numbers into a more readable format and the opposite.
+
+### useMask
+
+```jsx
+const PhoneInput = (props) => {
+    return <input {...useMask("+1 (...) ... ....")} {...props}/>
+}
+```
+
+### usePhone
+
+```javascript
+const {
+    value,
+    pattern,
+    metadata,
+    setValue,
+    countriesList,
+} = usePhone({
+    query,
+    country,
+    countryCode,
+    initialValue,
+    onlyCountries,
+    excludeCountries,
+    preferredCountries,
+})
+```
+
 ## Contribute
 
 Any contribution is welcome. Don't hesitate to open an issue or discussion if you have questions about your project's
