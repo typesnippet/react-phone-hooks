@@ -10,38 +10,20 @@ This comprehensive toolkit features custom hooks and utility functions tailored 
 and validation. It supports international standards, making it suitable for phone number processing applications across
 different countries and regions.
 
-## Features
+## Usage
 
-- Build a phone number input component with a country selector.
-- Parse the phone metadata and validate phone numbers.
-- Format raw phone numbers into a more readable format and the opposite.
+This library can be used to build a phone number input component with a country selector for React applications. As well
+as to parse the phone metadata, validate phone numbers, format raw phone numbers into a more readable format and the
+opposite. You can use the [development](./development) to test and develop your own components.
 
 ### useMask
 
 ```jsx
+import {useMask} from "react-phone-hooks";
+
 const PhoneInput = (props) => {
     return <input {...useMask("+1 (...) ... ....")} {...props}/>
 }
-```
-
-### usePhone
-
-```javascript
-const {
-    value,
-    pattern,
-    metadata,
-    setValue,
-    countriesList,
-} = usePhone({
-    query,
-    country,
-    countryCode,
-    initialValue,
-    onlyCountries,
-    excludeCountries,
-    preferredCountries,
-})
 ```
 
 ## Contribute
