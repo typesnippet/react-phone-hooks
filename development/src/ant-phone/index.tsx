@@ -48,9 +48,11 @@ const PhoneInput = forwardRef(({
                                    onChange: handleChange = () => null,
                                    onKeyDown: handleKeyDown = () => null,
                                    ...antInputProps
-                               }: PhoneInputProps, ref: any) => {
+                               }: PhoneInputProps, forwardedRef: any) => {
     const formInstance = useFormInstance();
     const formContext = useContext(FormContext);
+    const inputRef = useRef<any>(null);
+    const selectedRef = useRef<boolean>(false);
     const initiatedRef = useRef<boolean>(false);
     const [query, setQuery] = useState<string>("");
     const [minWidth, setMinWidth] = useState<number>(0);
@@ -102,7 +104,8 @@ const PhoneInput = forwardRef(({
     }, [handleKeyDown, onKeyDownMaskHandler])
 
     const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        const formattedNumber = getFormattedNumber(event.target.value, pattern);
+        const formattedNumber = selectedRef.current ? event.target.value : getFormattedNumber(event.target.value, pattern);
+        selectedRef.current = false;
         const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
         setCountryCode(phoneMetadata.isoCode as any);
         setValue(formattedNumber);
@@ -118,6 +121,13 @@ const PhoneInput = forwardRef(({
         setFieldValue(value);
         handleMount(value);
     }, [handleMount, setFieldValue])
+
+    const ref = useCallback((node: any) => {
+        [forwardedRef, inputRef].forEach((ref) => {
+            if (typeof ref === "function") ref(node);
+            else if (ref != null) ref.current = node;
+        })
+    }, [forwardedRef])
 
     useEffect(() => {
         if (initiatedRef.current) return;
@@ -147,6 +157,10 @@ const PhoneInput = forwardRef(({
                 setFieldValue({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)});
                 setCountryCode(selectedCountryCode);
                 setValue(formattedNumber);
+                selectedRef.current = true;
+                const nativeInputValueSetter = (Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value") as any).set;
+                nativeInputValueSetter.call(inputRef.current.input, formattedNumber);
+                inputRef.current.input.dispatchEvent(new Event("change", {bubbles: true}));
             }}
             optionLabelProp="label"
             dropdownStyle={{minWidth}}

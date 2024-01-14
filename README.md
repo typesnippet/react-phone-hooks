@@ -10,6 +10,24 @@ This comprehensive toolkit features custom hooks and utility functions tailored 
 and validation. It supports international standards, making it suitable for phone number processing applications across
 different countries and regions.
 
+## Usage
+
+This library can be used to build a phone number input component with a country selector for React applications. As well
+as to parse the phone metadata, validate phone numbers, format raw phone numbers into a more readable format and the
+opposite. You can use the [development](./development) to test and develop your own components.
+
+```jsx
+import {getFormattedNumber, getMetadata, parsePhoneNumber, useMask} from "react-phone-hooks";
+
+getMetadata("440201111111"); // ["gb", "United Kingdom", "44", "+44 (..) ... ....."]
+getFormattedNumber("440201111111", "+44 (..) ... ....."); // +44 (02) 011 11111
+parsePhoneNumber("+44 (02) 011 11111"); // {countryCode: 44, areaCode: "02", phoneNumber: "01111111", isoCode: "gb"}
+
+const PhoneInput = (props) => {
+    return <input {...useMask("+1 (...) ... ....")} {...props}/>
+}
+```
+
 ## Contribute
 
 Any contribution is welcome. Don't hesitate to open an issue or discussion if you have questions about your project's
