@@ -19,8 +19,8 @@ opposite. You can use the [development](./development) to test and develop your 
 ```jsx
 import {getFormattedNumber, getMetadata, parsePhoneNumber, useMask} from "react-phone-hooks";
 
+getFormattedNumber("440201111111"); // +44 (02) 011 11111
 getMetadata("440201111111"); // ["gb", "United Kingdom", "44", "+44 (..) ... ....."]
-getFormattedNumber("440201111111", "+44 (..) ... ....."); // +44 (02) 011 11111
 parsePhoneNumber("+44 (02) 011 11111"); // {countryCode: 44, areaCode: "02", phoneNumber: "01111111", isoCode: "gb"}
 
 const PhoneInput = (props) => {
