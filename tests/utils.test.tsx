@@ -8,9 +8,11 @@ describe("Verifying the basic functionality", () => {
         const metadata = getMetadata(rawValue);
 
         const formattedNumber = getFormattedNumber(rawValue, (metadata as any)[3]);
+        const formattedNumberOverloaded = getFormattedNumber(rawValue);
         const parsedPhoneNumber = parsePhoneNumber(formattedNumber);
         const rawPhoneNumber = getRawValue(formattedNumber);
 
+        assert(formattedNumber === formattedNumberOverloaded);
         assert(formattedNumber !== null && formattedNumber === "+1 (702) 123 4567");
         assert(parsedPhoneNumber !== null && parsedPhoneNumber.countryCode === 1);
         assert(parsedPhoneNumber.areaCode === "702" && parsedPhoneNumber.phoneNumber === "1234567");
