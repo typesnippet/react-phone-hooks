@@ -1,3 +1,5 @@
+"use client";
+
 import {ChangeEvent, KeyboardEvent, useCallback, useMemo, useRef, useState} from "react";
 
 import {PhoneNumber, usePhoneOptions} from "./types";
@@ -10,11 +12,8 @@ const slots = new Set(".");
 
 export const getMetadata = (rawValue: string, countriesList: typeof countries = countries, country: any = null) => {
     country = country == null && rawValue.startsWith("44") ? "gb" : country;
-    if (country != null) {
-        countriesList = countriesList.filter((c) => c[0] === country);
-        countriesList = countriesList.sort((a, b) => b[2].length - a[2].length);
-    }
-    return countriesList.find((c) => rawValue.startsWith(c[2]));
+    if (country != null) countriesList = countriesList.filter((c) => c[0] === country);
+    return [...countriesList].sort((a, b) => b[2].length - a[2].length).find((c) => rawValue.startsWith(c[2]));
 }
 
 export const getCountry = (countryCode: keyof typeof countries) => {
@@ -36,8 +35,9 @@ export const cleanInput = (input: any, pattern: string) => {
     return Array.from(pattern, c => input[0] === c || slots.has(c) ? input.shift() || c : c);
 }
 
-export const getFormattedNumber = (rawValue: any, pattern: string) => {
+export const getFormattedNumber = (rawValue: any, pattern?: string) => {
     /** Returns the reformatted input value based on the given pattern */
+    pattern = pattern || getMetadata(rawValue)?.[3] || "";
     return displayFormat(cleanInput(rawValue, pattern.replaceAll(/\d/g, ".")).join(""));
 }
 

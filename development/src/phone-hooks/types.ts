@@ -1,3 +1,5 @@
+"use client";
+
 export interface PhoneNumber {
     countryCode?: number | null;
     areaCode?: string | null;
