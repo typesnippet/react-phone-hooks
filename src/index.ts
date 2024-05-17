@@ -1,3 +1,5 @@
+"use client";
+
 import {ChangeEvent, KeyboardEvent, useCallback, useMemo, useRef, useState} from "react";
 
 import {PhoneNumber, usePhoneOptions} from "./types";

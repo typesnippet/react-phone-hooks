@@ -1,3 +1,5 @@
+"use client";
+
 export const jsonToCss = (stylesheet: object) => {
     /** Convert the given `stylesheet` object to raw CSS */
     return Object.entries(stylesheet).map(([selector, rules]) => {
