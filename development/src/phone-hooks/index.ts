@@ -119,6 +119,7 @@ export const usePhone = ({
                              onlyCountries = [],
                              excludeCountries = [],
                              preferredCountries = [],
+                             disableParentheses = false,
                          }: usePhoneOptions) => {
     const defaultValue = getRawValue(initialValue);
     const defaultMetadata = getMetadata(defaultValue) || countries.find(([iso]) => iso === country);
@@ -154,8 +155,9 @@ export const usePhone = ({
     }, [countriesList, countryCode, defaultMetadata, value])
 
     const pattern = useMemo(() => {
-        return metadata?.[3] || defaultMetadata?.[3] || "";
-    }, [defaultMetadata, metadata])
+        const mask = metadata?.[3] || defaultMetadata?.[3] || "";
+        return disableParentheses ? mask.replace(/[()]/g, "") : mask;
+    }, [disableParentheses, defaultMetadata, metadata])
 
     return {
         value,
