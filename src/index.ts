@@ -56,7 +56,7 @@ export const parsePhoneNumber = (formattedNumber: string, countriesList: typeof 
     const value = getRawValue(formattedNumber);
     const isoCode = getMetadata(value, countriesList, country)?.[0] || getDefaultISO2Code();
     const countryCodePattern = /\+\d+/;
-    const areaCodePattern = /\((\d+)\)/;
+    const areaCodePattern = /^\+\d+\s\(?(\d+)/;
 
     /** Parses the matching partials of the phone number by predefined regex patterns */
     const countryCodeMatch = formattedNumber ? (formattedNumber.match(countryCodePattern) || []) : [];
