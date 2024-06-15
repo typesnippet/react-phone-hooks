@@ -12,6 +12,7 @@ const usePhoneTester = ({
                             onlyCountries = [],
                             excludeCountries = [],
                             preferredCountries = [],
+                            disableParentheses = false,
                         }) => {
     const initiatedRef = useRef<boolean>(false);
     const [query, setQuery] = useState<string>("");
@@ -31,6 +32,7 @@ const usePhoneTester = ({
         onlyCountries,
         excludeCountries,
         preferredCountries,
+        disableParentheses,
     });
 
     const update = useCallback((value: string) => {
@@ -50,7 +52,8 @@ const usePhoneTester = ({
     const search = useCallback(setQuery, []);
 
     const select = useCallback((isoCode: string) => {
-        const mask = (countriesList.find(([iso]) => iso === isoCode) as any)[3];
+        const pattern = (countriesList.find(([iso]) => iso === isoCode) as any)[3];
+        const mask = disableParentheses ? pattern.replace(/[()]/g, "") : pattern;
         setValue(displayFormat(cleanInput(mask, mask).join("")));
         setCountryCode(isoCode);
     }, [setValue, countriesList]);
@@ -119,6 +122,24 @@ describe("Verifying the functionality of hooks", () => {
         act(() => result.current.select(result.current.countriesList[0][0]));
 
         expect((result.current.metadata as any)[0]).toBe("am");
+    })
+
+    it("Check usePhone without parentheses", () => {
+        const {result} = renderHook(usePhoneTester, {
+            initialProps: {
+                country: "au",
+                disableParentheses: true,
+            }
+        });
+
+        act(() => result.current.update("6104111"));
+
+        expect(result.current.value).toBe("+61 0 4111");
+        expect((result.current.metadata as any)[0]).toBe("au");
+
+        act(() => result.current.select("ms"));
+
+        expect(result.current.value).toBe("+1 664");
     })
 
     it("Check usePhone for country detection", () => {

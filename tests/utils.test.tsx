@@ -8,18 +8,27 @@ describe("Verifying the basic functionality", () => {
         const metadata = getMetadata(rawValue);
 
         const formattedNumber = getFormattedNumber(rawValue, (metadata as any)[3]);
+        const formattedNumberWithoutParentheses = formattedNumber.replace(/[()]/g, "");
         const formattedNumberOverloaded = getFormattedNumber(rawValue);
         const parsedPhoneNumber = parsePhoneNumber(formattedNumber);
-        const rawPhoneNumber = getRawValue(formattedNumber);
+        const parsedPhoneNumberWithoutParentheses = parsePhoneNumber(formattedNumberWithoutParentheses);
+        const rawPhoneNumber1 = getRawValue(formattedNumber);
+        const rawPhoneNumber2 = getRawValue(formattedNumberWithoutParentheses);
 
         assert(formattedNumber === formattedNumberOverloaded);
         assert(formattedNumber !== null && formattedNumber === "+1 (702) 123 4567");
         assert(parsedPhoneNumber !== null && parsedPhoneNumber.countryCode === 1);
         assert(parsedPhoneNumber.areaCode === "702" && parsedPhoneNumber.phoneNumber === "1234567");
-        assert(rawPhoneNumber === rawValue);
+        assert(parsedPhoneNumberWithoutParentheses !== null && parsedPhoneNumberWithoutParentheses.countryCode === 1);
+        assert(parsedPhoneNumberWithoutParentheses.areaCode === "702" && parsedPhoneNumberWithoutParentheses.phoneNumber === "1234567");
+        assert(rawPhoneNumber1 === rawValue);
+        assert(rawPhoneNumber2 === rawValue);
     })
 
     it("Check the phone number validity", () => {
+        assert(checkValidity(parsePhoneNumber("+1 702 123 4567")) === true);
+        assert(checkValidity(parsePhoneNumber("+1 702 123 456")) === false);
+
         assert(checkValidity(parsePhoneNumber("+1 (702) 123 4567")) === true);
         assert(checkValidity(parsePhoneNumber("+1 (702) 123 456")) === false);
 
