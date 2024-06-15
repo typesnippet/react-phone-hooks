@@ -16,5 +16,6 @@ export interface usePhoneOptions {
     onlyCountries?: string[];
     excludeCountries?: string[];
     preferredCountries?: string[];
+    disableParentheses?: boolean;
     initialValue?: PhoneNumber | string;
 }

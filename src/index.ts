@@ -56,7 +56,7 @@ export const parsePhoneNumber = (formattedNumber: string, countriesList: typeof 
     const value = getRawValue(formattedNumber);
     const isoCode = getMetadata(value, countriesList, country)?.[0] || getDefaultISO2Code();
     const countryCodePattern = /\+\d+/;
-    const areaCodePattern = /\((\d+)\)/;
+    const areaCodePattern = /^\+\d+\s\(?(\d+)/;
 
     /** Parses the matching partials of the phone number by predefined regex patterns */
     const countryCodeMatch = formattedNumber ? (formattedNumber.match(countryCodePattern) || []) : [];
@@ -119,6 +119,7 @@ export const usePhone = ({
                              onlyCountries = [],
                              excludeCountries = [],
                              preferredCountries = [],
+                             disableParentheses = false,
                          }: usePhoneOptions) => {
     const defaultValue = getRawValue(initialValue);
     const defaultMetadata = getMetadata(defaultValue) || countries.find(([iso]) => iso === country);
@@ -154,8 +155,9 @@ export const usePhone = ({
     }, [countriesList, countryCode, defaultMetadata, value])
 
     const pattern = useMemo(() => {
-        return metadata?.[3] || defaultMetadata?.[3] || "";
-    }, [defaultMetadata, metadata])
+        const mask = metadata?.[3] || defaultMetadata?.[3] || "";
+        return disableParentheses ? mask.replace(/[()]/g, "") : mask;
+    }, [disableParentheses, defaultMetadata, metadata])
 
     return {
         value,

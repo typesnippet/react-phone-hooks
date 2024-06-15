@@ -1,3 +1,5 @@
+"use client";
+
 import {ChangeEvent, KeyboardEvent} from "react";
 import types from "react-phone-hooks/types";
 import {InputProps} from "@mui/base/Input";
@@ -8,6 +10,8 @@ export interface PhoneInputProps extends Omit<InputProps, "onChange"> {
     value?: PhoneNumber | string;
 
     country?: string;
+
+    disableParentheses?: boolean;
 
     onlyCountries?: string[];
 

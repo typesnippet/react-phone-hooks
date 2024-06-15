@@ -1,3 +1,5 @@
+"use client";
+
 import {ChangeEvent, KeyboardEvent} from "react";
 import types from "react-phone-hooks/types";
 import {TextFieldProps} from "@mui/material/TextField";
@@ -18,6 +20,8 @@ export interface PhoneInputProps extends Omit<TextFieldProps, "onChange"> {
     searchPlaceholder?: string;
 
     disableDropdown?: boolean;
+
+    disableParentheses?: boolean;
 
     onlyCountries?: string[];
 

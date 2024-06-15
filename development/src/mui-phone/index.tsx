@@ -1,3 +1,5 @@
+"use client";
+
 import {ChangeEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {InputAdornment, MenuItem, Select, TextField} from "@mui/material";
 
@@ -24,8 +26,10 @@ const PhoneInput = forwardRef(({
                                    variant = undefined,
                                    searchVariant = undefined,
                                    country = getDefaultISO2Code(),
+                                   disabled = false,
                                    enableSearch = false,
                                    disableDropdown = false,
+                                   disableParentheses = false,
                                    onlyCountries = [],
                                    excludeCountries = [],
                                    preferredCountries = [],
@@ -36,8 +40,9 @@ const PhoneInput = forwardRef(({
                                    onChange: handleChange = () => null,
                                    onKeyDown: handleKeyDown = () => null,
                                    ...muiInputProps
-                               }: PhoneInputProps, ref: any) => {
+                               }: PhoneInputProps, forwardedRef: any) => {
     searchVariant = searchVariant || variant;
+    const inputRef = useRef<any>(null);
     const searchRef = useRef<boolean>(false);
     const initiatedRef = useRef<boolean>(false);
     const [query, setQuery] = useState<string>("");
@@ -59,6 +64,7 @@ const PhoneInput = forwardRef(({
         onlyCountries,
         excludeCountries,
         preferredCountries,
+        disableParentheses,
     });
 
     const {
@@ -94,6 +100,13 @@ const PhoneInput = forwardRef(({
         handleMount(value);
     }, [handleMount])
 
+    const ref = useCallback((node: any) => {
+        [forwardedRef, inputRef].forEach((ref) => {
+            if (typeof ref === "function") ref(node);
+            else if (ref != null) ref.current = node;
+        })
+    }, [forwardedRef])
+
     useEffect(() => {
         if (initiatedRef.current) return;
         initiatedRef.current = true;
@@ -111,7 +124,7 @@ const PhoneInput = forwardRef(({
     return (
         <div className="mui-phone-input-wrapper"
              ref={node => setMaxWidth(node?.offsetWidth || 0)}>
-            {!disableDropdown && (
+            {(!disableDropdown && !disabled) && (
                 <Select
                     open={open}
                     variant={variant}
@@ -122,6 +135,7 @@ const PhoneInput = forwardRef(({
                     <div className="mui-phone-input-search-wrapper" onKeyDown={(e: any) => e.stopPropagation()}>
                         {enableSearch && (
                             <TextField
+                                autoFocus
                                 type="search"
                                 value={query}
                                 variant={searchVariant}
@@ -133,27 +147,36 @@ const PhoneInput = forwardRef(({
                             />
                         )}
                         <div className="mui-phone-input-search-list">
-                            {countriesList.length ? countriesList.map(([iso, name, dial, mask]) => (
-                                <MenuItem
-                                    disableRipple
-                                    key={iso + mask}
-                                    value={iso + dial}
-                                    style={{maxWidth}}
-                                    selected={selectValue === iso + dial}
-                                    onClick={() => {
-                                        const selectedOption = iso + dial;
-                                        if (selectValue === selectedOption) return;
-                                        setCountryCode(selectedOption.slice(0, 2));
-                                        setValue(getFormattedNumber(mask, mask));
-                                    }}
-                                    children={<div className="mui-phone-input-select-item">
-                                        <div className={`flag ${iso}`}/>
-                                        <div className="label">
-                                            {name}&nbsp;{displayFormat(mask)}
-                                        </div>
-                                    </div>}
-                                />
-                            )) : <MenuItem disabled>{searchNotFound}</MenuItem>}
+                            {countriesList.length ? countriesList.map(([iso, name, dial, pattern]) => {
+                                const mask = disableParentheses ? pattern.replace(/[()]/g, "") : pattern;
+                                return (
+                                    <MenuItem
+                                        disableRipple
+                                        key={iso + mask}
+                                        value={iso + dial}
+                                        style={{maxWidth}}
+                                        selected={selectValue === iso + dial}
+                                        onClick={() => {
+                                            const formattedNumber = getFormattedNumber(mask, mask);
+                                            const input = inputRef.current.querySelector("input");
+                                            input.value = formattedNumber;
+                                            setValue(formattedNumber);
+                                            setCountryCode(iso);
+                                            setQuery("");
+                                            const nativeInputValueSetter = (Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value") as any).set;
+                                            nativeInputValueSetter.call(input, formattedNumber);
+                                            input.dispatchEvent(new Event("change", {bubbles: true}));
+                                            setTimeout(() => input.focus(), 100);
+                                        }}
+                                        children={<div className="mui-phone-input-select-item">
+                                            <div className={`flag ${iso}`}/>
+                                            <div className="label">
+                                                {name}&nbsp;{displayFormat(mask)}
+                                            </div>
+                                        </div>}
+                                    />
+                                )
+                            }) : <MenuItem disabled>{searchNotFound}</MenuItem>}
                         </div>
                     </div>
                 </Select>
@@ -164,6 +187,7 @@ const PhoneInput = forwardRef(({
                 value={value}
                 variant={variant}
                 onInput={onInput}
+                disabled={disabled}
                 onChange={onChange}
                 onKeyDown={onKeyDown}
                 InputProps={{

@@ -1,3 +1,5 @@
+"use client";
+
 import {ChangeEvent, KeyboardEvent} from "react";
 import types from "react-phone-hooks/types";
 import {InputProps} from "@mui/joy";
@@ -18,6 +20,8 @@ export interface PhoneInputProps extends Omit<InputProps, "value" | "onChange"> 
     searchPlaceholder?: string;
 
     disableDropdown?: boolean;
+
+    disableParentheses?: boolean;
 
     onlyCountries?: string[];
 
