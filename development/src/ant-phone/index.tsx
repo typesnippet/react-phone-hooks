@@ -45,8 +45,6 @@ const PhoneInput = forwardRef(({
                                    onlyCountries = [],
                                    excludeCountries = [],
                                    preferredCountries = [],
-                                   searchNotFound = "No country found",
-                                   searchPlaceholder = "Search country",
                                    dropdownRender = (node) => node,
                                    onMount: handleMount = () => null,
                                    onInput: handleInput = () => null,
@@ -55,6 +53,7 @@ const PhoneInput = forwardRef(({
                                    ...antInputProps
                                }: PhoneInputProps, forwardedRef: any) => {
     const formInstance = useFormInstance();
+    const {locale = {}} = useContext(ConfigContext);
     const formContext = useContext(FormContext);
     const {getPrefixCls} = useContext(ConfigContext);
     const inputRef = useRef<any>(null);
@@ -64,6 +63,12 @@ const PhoneInput = forwardRef(({
     const [query, setQuery] = useState<string>("");
     const [minWidth, setMinWidth] = useState<number>(0);
     const [countryCode, setCountryCode] = useState<string>(country);
+
+    const {
+        searchNotFound = "No country found",
+        searchPlaceholder = "Search country",
+        countries = new Proxy({}, ({get: (_: any, prop: any) => prop})),
+    } = (locale as any).PhoneInput || {};
 
     const prefixCls = getPrefixCls();
     injectMergedStyles(prefixCls);
@@ -222,13 +227,13 @@ const PhoneInput = forwardRef(({
                         label={<div className={`flag ${iso}`}/>}
                         children={<div className={`${prefixCls}-phone-input-select-item`}>
                             <div className={`flag ${iso}`}/>
-                            {name}&nbsp;{displayFormat(mask)}
+                            {countries[name]}&nbsp;{displayFormat(mask)}
                         </div>}
                     />
                 )
             })}
         </Select>
-    ), [selectValue, query, disabled, disableParentheses, disableDropdown, onDropdownVisibleChange, minWidth, searchNotFound, countriesList, setFieldValue, setValue, prefixCls, enableSearch, searchPlaceholder])
+    ), [selectValue, query, disabled, disableParentheses, disableDropdown, onDropdownVisibleChange, minWidth, searchNotFound, countries, countriesList, setFieldValue, setValue, prefixCls, enableSearch, searchPlaceholder])
 
     return (
         <div className={`${prefixCls}-phone-input-wrapper`}

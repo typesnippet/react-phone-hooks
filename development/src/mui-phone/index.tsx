@@ -1,7 +1,7 @@
 "use client";
 
 import {ChangeEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {InputAdornment, MenuItem, Select, TextField} from "@mui/material";
+import {InputAdornment, MenuItem, Select, TextField, useThemeProps} from "@mui/material";
 
 import {
     checkValidity,
@@ -33,8 +33,6 @@ const PhoneInput = forwardRef(({
                                    onlyCountries = [],
                                    excludeCountries = [],
                                    preferredCountries = [],
-                                   searchNotFound = "No country found",
-                                   searchPlaceholder = "Search country",
                                    onMount: handleMount = () => null,
                                    onInput: handleInput = () => null,
                                    onChange: handleChange = () => null,
@@ -49,6 +47,12 @@ const PhoneInput = forwardRef(({
     const [open, setOpen] = useState<boolean>(false);
     const [maxWidth, setMaxWidth] = useState<number>(0);
     const [countryCode, setCountryCode] = useState<string>(country);
+
+    const {
+        searchNotFound = "No country found",
+        searchPlaceholder = "Search country",
+        countries = new Proxy({}, ({get: (_: any, prop: any) => prop})),
+    } = useThemeProps({props: {}, name: "MuiPhoneInput"}) as any;
 
     const {
         value,
@@ -171,7 +175,7 @@ const PhoneInput = forwardRef(({
                                         children={<div className="mui-phone-input-select-item">
                                             <div className={`flag ${iso}`}/>
                                             <div className="label">
-                                                {name}&nbsp;{displayFormat(mask)}
+                                                {countries[name]}&nbsp;{displayFormat(mask)}
                                             </div>
                                         </div>}
                                     />
