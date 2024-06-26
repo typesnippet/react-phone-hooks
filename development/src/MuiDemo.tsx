@@ -4,6 +4,7 @@ import {Button, Container, CssBaseline, TextField} from "@mui/material";
 
 import PhoneInput from "./mui-phone";
 import BasePhoneInput from "./mui-phone/base";
+import locale from "./mui-phone/locale";
 
 const Demo = () => {
     const [value, setValue] = useState({});
@@ -11,7 +12,7 @@ const Demo = () => {
 
     const error = useMemo(() => (value as any).valid && !(value as any).valid(), [value]);
 
-    const theme = useMemo(() => createTheme({palette: {mode: mode as any}}), [mode]);
+    const theme = useMemo(() => createTheme({palette: {mode: mode as any}}, locale("frFR")), [mode]);
 
     const handleThemeChange = useCallback(() => setMode(mode === "dark" ? "light" : "dark"), [mode]);
 
