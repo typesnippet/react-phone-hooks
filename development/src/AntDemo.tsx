@@ -48,7 +48,11 @@ const AntDemo = () => {
                     )}
                     <Form>
                         <FormItem name="phone" rules={[{validator}]}>
-                            <PhoneInput enableSearch onChange={(e) => setValue(e as any)}/>
+                            <PhoneInput
+                                enableArrow
+                                enableSearch
+                                onChange={(e) => setValue(e as any)}
+                            />
                         </FormItem>
                         <FormItem name="test">
                             <Input/>
