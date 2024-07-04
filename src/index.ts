@@ -129,17 +129,15 @@ export const usePhone = ({
 
     const countriesOnly = useMemo(() => {
         const allowList = onlyCountries.length > 0 ? onlyCountries : countries.map(([iso]) => iso);
-        return countries.map(([iso]) => iso).filter((iso) => {
-            return allowList.includes(iso) && !excludeCountries.includes(iso);
+        return countries.filter(([iso, _1, dial]) => {
+            return (allowList.includes(iso) || allowList.includes(dial)) && !excludeCountries.includes(iso) && !excludeCountries.includes(dial);
         });
     }, [onlyCountries, excludeCountries])
 
     const countriesList = useMemo(() => {
-        const filteredCountries = countries.filter(([iso, name, _1, dial]) => {
-            return countriesOnly.includes(iso) && (
-                name.toLowerCase().startsWith(query.toLowerCase()) || dial.includes(query)
-            );
-        });
+        const filteredCountries = countriesOnly.filter(([_1, name, dial, mask]) => (
+            name.toLowerCase().startsWith(query.toLowerCase()) || dial.includes(query) || mask.includes(query)
+        ));
         return [
             ...filteredCountries.filter(([iso]) => preferredCountries.includes(iso)),
             ...filteredCountries.filter(([iso]) => !preferredCountries.includes(iso)),

@@ -124,6 +124,23 @@ describe("Verifying the functionality of hooks", () => {
         expect((result.current.metadata as any)[0]).toBe("am");
     })
 
+    it("Check usePhone for advanced country filtering", () => {
+        const {result} = renderHook(usePhoneTester, {
+            initialProps: {
+                onlyCountries: ["ae", "gb", "us"] as any,
+                excludeCountries: ["1907", "1205", "1251"] as any,
+            }
+        });
+
+        expect(result.current.countriesList.map(c => c[2]).includes("1"));
+        expect(result.current.countriesList.map(c => c[2]).includes("44"));
+        expect(result.current.countriesList.map(c => c[2]).includes("971"));
+
+        expect(!result.current.countriesList.map(c => c[2]).includes("1907"));
+        expect(!result.current.countriesList.map(c => c[2]).includes("1205"));
+        expect(!result.current.countriesList.map(c => c[2]).includes("1251"));
+    })
+
     it("Check usePhone without parentheses", () => {
         const {result} = renderHook(usePhoneTester, {
             initialProps: {

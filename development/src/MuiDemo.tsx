@@ -32,7 +32,6 @@ const Demo = () => {
                     )}
                     <form noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
                         <PhoneInput
-                            enableArrow
                             enableSearch
                             error={error}
                             variant="filled"
