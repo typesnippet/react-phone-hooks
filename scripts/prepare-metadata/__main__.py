@@ -27,7 +27,7 @@ def update_mask(mask, length):
         while len(pn_mask.replace(" ", "")) > pn_mask_expected_length:
             pn_mask = pn_mask[:-1]
         mask = f"{cc_mask} {ac_mask} {pn_mask}" if ac_mask else f"{cc_mask} {pn_mask}"
-    return re.sub(r"\s(\.{1,2})$", r"\1", mask)
+    return re.sub(r"\s(\.)$", r"\1", mask)
 
 
 with open(patterns_path) as fp:
@@ -36,9 +36,10 @@ with open(patterns_path) as fp:
 with open(countries_path) as fp:
     countries = json.load(fp)
 
-for territory in territories:
+for territory in filter(lambda t: t.get("id").isalpha(), territories):
     # Regenerate masks based on possible maximum lengths
-    possible_lengths = map(lambda e: territory.find(f"{e.tag}/possibleLengths"), territory.iter())
+    possible_lengths = map(lambda e: territory.find(f"{e.tag}/possibleLengths") if e.tag != "tollFree" else None,
+                           territory.iter())
     possible_lengths = map(lambda e: e.get("national"), filter(lambda e: e is not None, possible_lengths))
     possible_lengths = list(map(int, re.findall(r"\d+", ",".join(possible_lengths))))
     min_length, max_length = min(possible_lengths), max(possible_lengths)
