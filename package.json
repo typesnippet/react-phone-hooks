@@ -1,5 +1,5 @@
 {
-  "version": "0.1.8",
+  "version": "0.1.9",
   "name": "react-phone-hooks",
   "description": "React hooks and utility functions for parsing and validating phone numbers.",
   "keywords": [
