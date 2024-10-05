@@ -16,6 +16,7 @@ import {
     usePhone,
 } from "../phone-hooks";
 
+import locale from "./locale";
 import {injectMergedStyles} from "./styles";
 import {PhoneInputProps, PhoneNumber} from "./types";
 
@@ -34,6 +35,8 @@ const PhoneInput = forwardRef(({
                                    onlyCountries = [],
                                    excludeCountries = [],
                                    preferredCountries = [],
+                                   searchNotFound: defaultSearchNotFound = "No country found",
+                                   searchPlaceholder: defaultSearchPlaceholder = "Search country",
                                    onMount: handleMount = () => null,
                                    onInput: handleInput = () => null,
                                    onChange: handleChange = () => null,
@@ -50,8 +53,8 @@ const PhoneInput = forwardRef(({
     const [countryCode, setCountryCode] = useState<string>(country);
 
     const {
-        searchNotFound = "No country found",
-        searchPlaceholder = "Search country",
+        searchNotFound = defaultSearchNotFound,
+        searchPlaceholder = defaultSearchPlaceholder,
         countries = new Proxy({}, ({get: (_: any, prop: any) => prop})),
     } = useThemeProps({props: {}, name: "MuiPhoneInput"}) as any;
 
@@ -225,3 +228,4 @@ const PhoneInput = forwardRef(({
 })
 
 export default PhoneInput;
+export type {PhoneInputProps, PhoneNumber, locale};

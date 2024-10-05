@@ -1,7 +1,7 @@
 "use client";
 
 import {ChangeEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {Input, Option, Select} from "@mui/joy";
+import {Input, Option, Select, useThemeProps} from "@mui/joy";
 
 import {
     checkValidity,
@@ -16,6 +16,7 @@ import {
     usePhone,
 } from "../../phone-hooks";
 
+import locale from "../locale";
 import {injectMergedStyles} from "./styles";
 import {PhoneInputProps, PhoneNumber} from "./types";
 
@@ -27,14 +28,15 @@ const PhoneInput = forwardRef(({
                                    searchVariant = undefined,
                                    country = getDefaultISO2Code(),
                                    disabled = false,
+                                   enableArrow = false,
                                    enableSearch = false,
                                    disableDropdown = false,
                                    disableParentheses = false,
                                    onlyCountries = [],
                                    excludeCountries = [],
                                    preferredCountries = [],
-                                   searchNotFound = "No country found",
-                                   searchPlaceholder = "Search country",
+                                   searchNotFound: defaultSearchNotFound = "No country found",
+                                   searchPlaceholder: defaultSearchPlaceholder = "Search country",
                                    onMount: handleMount = () => null,
                                    onInput: handleInput = () => null,
                                    onChange: handleChange = () => null,
@@ -49,6 +51,12 @@ const PhoneInput = forwardRef(({
     const [open, setOpen] = useState<boolean>(false);
     const [maxWidth, setMaxWidth] = useState<number>(0);
     const [countryCode, setCountryCode] = useState<string>(country);
+
+    const {
+        searchNotFound = defaultSearchNotFound,
+        searchPlaceholder = defaultSearchPlaceholder,
+        countries = new Proxy({}, ({get: (_: any, prop: any) => prop})),
+    } = useThemeProps({props: {}, name: "MuiPhoneInput"}) as any;
 
     const {
         value,
@@ -168,7 +176,7 @@ const PhoneInput = forwardRef(({
                                         children={<div className="mui-phone-input-select-item">
                                             <div className={`flag ${iso}`}/>
                                             <div className="label">
-                                                {name}&nbsp;{displayFormat(mask)}
+                                                {countries[name]}&nbsp;{displayFormat(mask)}
                                             </div>
                                         </div>}
                                     />
@@ -189,10 +197,21 @@ const PhoneInput = forwardRef(({
                 onKeyDown={onKeyDown}
                 startDecorator={(
                     <span
-                        style={{cursor: "pointer"}}
+                        style={{
+                            display: "flex",
+                            cursor: "pointer",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
                         onClick={() => setOpen(!open)}
                     >
                         <div className={`flag ${countryCode}`}/>
+                        {enableArrow && (
+                            <svg viewBox="0 0 24 24" focusable="false" fill="currentColor"
+                                 style={{paddingLeft: 4}} width="22" height="20">
+                                <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+                            </svg>
+                        )}
                     </span>
                 )}
                 {...(muiInputProps as any)}
@@ -202,3 +221,4 @@ const PhoneInput = forwardRef(({
 })
 
 export default PhoneInput;
+export type {PhoneInputProps, PhoneNumber, locale};
