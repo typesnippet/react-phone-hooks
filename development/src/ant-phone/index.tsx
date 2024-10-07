@@ -133,6 +133,7 @@ const PhoneInput = forwardRef(({
         const phoneMetadata = parsePhoneNumber(formattedNumber, countriesList);
         setCountryCode(phoneMetadata.isoCode as any);
         setValue(formattedNumber);
+        setQuery("");
         handleChange({...phoneMetadata, valid: (strict: boolean) => checkValidity(phoneMetadata, strict)}, event);
     }, [countriesList, handleChange, pattern, setValue])
 
