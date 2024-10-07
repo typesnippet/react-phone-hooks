@@ -222,6 +222,16 @@ const PhoneInput = forwardRef(({
                 </div>
             )}
         >
+            <Select.Option
+                children={null}
+                value={selectValue}
+                style={{display: "none"}}
+                key={`${countryCode}_default`}
+                label={<>
+                    <div className={`flag ${countryCode}`}/>
+                    {suffixIcon}
+                </>}
+            />
             {countriesList.map(([iso, name, dial, pattern]) => {
                 const mask = disableParentheses ? pattern.replace(/[()]/g, "") : pattern;
                 return (
