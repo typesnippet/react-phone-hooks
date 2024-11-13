@@ -11,6 +11,7 @@ export interface PhoneNumber {
 
 export interface usePhoneOptions {
     query?: string;
+    locale?: string;
     country?: string;
     countryCode?: string;
     onlyCountries?: string[];
