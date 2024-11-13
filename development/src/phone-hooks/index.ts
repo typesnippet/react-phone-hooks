@@ -4,6 +4,7 @@ import {ChangeEvent, KeyboardEvent, useCallback, useMemo, useRef, useState} from
 
 import {PhoneNumber, usePhoneOptions} from "./types";
 
+import * as phoneLocale from "./locale";
 import countries from "./metadata/countries.json";
 import timezones from "./metadata/timezones.json";
 import validations from "./metadata/validations.json";
@@ -113,6 +114,7 @@ export const useMask = (pattern: string) => {
 
 export const usePhone = ({
                              query = "",
+                             locale = "",
                              country = "",
                              countryCode = "",
                              initialValue = "",
@@ -135,14 +137,17 @@ export const usePhone = ({
     }, [onlyCountries, excludeCountries])
 
     const countriesList = useMemo(() => {
-        const filteredCountries = countriesOnly.filter(([_1, name, dial, mask]) => (
-            name.toLowerCase().startsWith(query.toLowerCase()) || dial.includes(query) || mask.includes(query)
-        ));
+        const filteredCountries = countriesOnly.filter(([_1, name, dial, mask]) => {
+            const q = query.toLowerCase();
+            const countries = locale && ((phoneLocale as any)[locale])?.countries;
+            const localized = countries && (countries[name] || "").toLowerCase();
+            return [localized, name.toLowerCase(), dial, mask].some(component => component.includes(q));
+        });
         return [
             ...filteredCountries.filter(([iso]) => preferredCountries.includes(iso)),
             ...filteredCountries.filter(([iso]) => !preferredCountries.includes(iso)),
         ];
-    }, [countriesOnly, preferredCountries, query])
+    }, [countriesOnly, preferredCountries, locale, query])
 
     const metadata = useMemo(() => {
         const calculatedMetadata = getMetadata(getRawValue(value), countriesList, countryCode);
