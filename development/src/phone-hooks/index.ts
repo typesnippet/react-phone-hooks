@@ -149,6 +149,7 @@ export const usePhone = ({
             ...filteredCountries.filter(([iso]) => preferredCountries.includes(iso)),
             ...filteredCountries.filter(([iso]) => !preferredCountries.includes(iso)),
         ];
+        if (!distinct) return whitelistCountries;
         return whitelistCountries.filter(([iso]) => !seen.has(iso) && seen.add(iso));
     }, [countriesOnly, preferredCountries, distinct, locale, query])
 
