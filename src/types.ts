@@ -13,6 +13,7 @@ export interface usePhoneOptions {
     query?: string;
     locale?: string;
     country?: string;
+    distinct?: boolean;
     countryCode?: string;
     onlyCountries?: string[];
     excludeCountries?: string[];
