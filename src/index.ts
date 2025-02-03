@@ -116,6 +116,7 @@ export const usePhone = ({
                              query = "",
                              locale = "",
                              country = "",
+                             distinct = false,
                              countryCode = "",
                              initialValue = "",
                              onlyCountries = [],
@@ -143,11 +144,13 @@ export const usePhone = ({
             const localized = countries && (countries[name] || "").toLowerCase();
             return [localized, name.toLowerCase(), dial, mask].some(component => component.includes(q));
         });
-        return [
+        const seen = new Set();
+        const whitelistCountries = [
             ...filteredCountries.filter(([iso]) => preferredCountries.includes(iso)),
             ...filteredCountries.filter(([iso]) => !preferredCountries.includes(iso)),
         ];
-    }, [countriesOnly, preferredCountries, locale, query])
+        return whitelistCountries.filter(([iso]) => !seen.has(iso) && seen.add(iso));
+    }, [countriesOnly, preferredCountries, distinct, locale, query])
 
     const metadata = useMemo(() => {
         const calculatedMetadata = getMetadata(getRawValue(value), countriesList, countryCode);
