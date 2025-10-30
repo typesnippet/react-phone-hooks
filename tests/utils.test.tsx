@@ -23,6 +23,9 @@ describe("Verifying the basic functionality", () => {
         assert(parsedPhoneNumberWithoutParentheses.areaCode === "702" && parsedPhoneNumberWithoutParentheses.phoneNumber === "1234567");
         assert(rawPhoneNumber1 === rawValue);
         assert(rawPhoneNumber2 === rawValue);
+        assert(getFormattedNumber("+") === "+");
+        assert(getFormattedNumber("++") === "+");
+        assert(getFormattedNumber("+a") === "+");
     })
 
     it("Check the phone number validity", () => {

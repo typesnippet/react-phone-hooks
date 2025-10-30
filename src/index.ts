@@ -38,6 +38,7 @@ export const cleanInput = (input: any, pattern: string) => {
 
 export const getFormattedNumber = (rawValue: any, pattern?: string) => {
     /** Returns the reformatted input value based on the given pattern */
+    if (/^\+\D*?$/.test(rawValue)) return "+";
     pattern = pattern || getMetadata(rawValue)?.[3] || "";
     return displayFormat(cleanInput(rawValue, pattern.replaceAll(/\d/g, ".")).join(""));
 }
