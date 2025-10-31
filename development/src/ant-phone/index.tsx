@@ -15,6 +15,7 @@ import useFormInstance from "antd/es/form/hooks/useFormInstance";
 import {ConfigContext} from "antd/es/config-provider";
 import {FormContext} from "antd/es/form/context";
 import {useWatch} from "antd/es/form/Form";
+import version from "antd/es/version";
 import Select from "antd/es/select";
 import Input from "antd/es/input";
 
@@ -36,9 +37,14 @@ import locale from "./locale";
 import {injectMergedStyles} from "./styles";
 import {PhoneInputProps, PhoneNumber} from "./types";
 
+const [major, minor, _] = version.split(".").map(Number);
+const isV5x = major === 5;
+const isV5x25 = isV5x && minor >= 25;
+
 const PhoneInput = forwardRef(({
                                    value: initialValue = "",
                                    country = getDefaultISO2Code(),
+                                   useSVG = false,
                                    distinct = false,
                                    disabled = false,
                                    enableArrow = false,
@@ -221,9 +227,9 @@ const PhoneInput = forwardRef(({
                 inputRef.current.input.focus();
             }}
             optionLabelProp="label"
-            dropdownStyle={{minWidth}}
-            onDropdownVisibleChange={onDropdownVisibleChange}
-            dropdownRender={(menu) => (
+            {...(isV5x ? {onOpenChange: onDropdownVisibleChange} : {onDropdownVisibleChange})}
+            {...(isV5x25 ? {styles: {popup: {root: {minWidth}}}} : {dropdownStyle: {minWidth}})}
+            {...({[isV5x ? "popupRender" : "dropdownRender"]: (menu: any) => (
                 <div className={`${prefixCls}-phone-input-search-wrapper`}>
                     {enableSearch && (
                         <Input
@@ -237,7 +243,7 @@ const PhoneInput = forwardRef(({
                         <div className="ant-select-item-empty">{searchNotFound}</div>
                     )}
                 </div>
-            )}
+            )})}
         >
             <Select.Option
                 children={null}
@@ -245,7 +251,7 @@ const PhoneInput = forwardRef(({
                 style={{display: "none"}}
                 key={`${countryCode}_default`}
                 label={<div style={{display: "flex"}}>
-                    <div className={`flag ${countryCode}`}/>
+                    <div className={`flag ${countryCode} ${useSVG ? "svg" : ""}`}/>
                     {suffixIcon}
                 </div>}
             />
@@ -256,18 +262,18 @@ const PhoneInput = forwardRef(({
                         value={iso + dial}
                         key={`${iso}_${mask}`}
                         label={<div style={{display: "flex"}}>
-                            <div className={`flag ${iso}`}/>
+                            <div className={`flag ${iso} ${useSVG ? "svg" : ""}`}/>
                             {suffixIcon}
                         </div>}
                         children={<div className={`${prefixCls}-phone-input-select-item`}>
-                            <div className={`flag ${iso}`}/>
+                            <div className={`flag ${iso} ${useSVG ? "svg" : ""}`}/>
                             {countries[name]}&nbsp;{displayFormat(mask)}
                         </div>}
                     />
                 )
             })}
         </Select>
-    ), [selectValue, suffixIcon, countryCode, query, disabled, disableParentheses, disableDropdown, onDropdownVisibleChange, minWidth, searchNotFound, countries, countriesList, setFieldValue, setValue, prefixCls, enableSearch, searchPlaceholder])
+    ), [selectValue, suffixIcon, countryCode, query, disabled, disableParentheses, disableDropdown, onDropdownVisibleChange, minWidth, searchNotFound, countries, countriesList, setFieldValue, setValue, prefixCls, enableSearch, searchPlaceholder, useSVG])
 
     return (
         <div className={`${prefixCls}-phone-input-wrapper`}
