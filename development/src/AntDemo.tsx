@@ -35,7 +35,7 @@ const AntDemo = () => {
         <ConfigProvider
             locale={locale("frFR")}
             theme={{algorithm: algorithm === "defaultAlgorithm" ? theme.defaultAlgorithm : theme.darkAlgorithm}}>
-            <Card style={{height: "100%", borderRadius: 0, border: "none"}} bodyStyle={{padding: 0}}>
+            <Card style={{height: "100%", borderRadius: 0, border: "none"}} styles={{body: {padding: 0}}}>
                 <div style={{margin: 20, maxWidth: 400}}>
                     {value && (
                         <pre style={{
