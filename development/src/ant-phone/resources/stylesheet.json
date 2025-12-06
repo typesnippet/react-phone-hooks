@@ -18,6 +18,11 @@
     "padding": "0 11px !important",
     "height": "unset !important"
   },
+  ".ant-phone-input-wrapper .ant-select-content": {
+    "justify-content": "center",
+    "margin": "0 !important",
+    "display": "flex"
+  },
   ".ant-phone-input-wrapper .ant-select-content input": {
     "display": "none !important"
   },
