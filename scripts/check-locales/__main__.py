@@ -15,6 +15,8 @@ with open(locale_file, 'r') as f:
 locale_pattern = r'^export const (\w+) = \{'
 existing_locales = set(re.findall(locale_pattern, content, re.MULTILINE))
 
+locale_name_pattern = re.compile(r'^[a-z]{2,3}[A-Z][A-Za-z]{1,3}$')
+
 try:
     result = subprocess.run(
         ['curl', '-s', '-H', 'User-Agent: react-phone-hooks', 
@@ -27,9 +29,11 @@ try:
         files = json.loads(result.stdout)
         antd_locales = set()
         for file in files:
-            if file['name'].endswith('.ts') and file['name'] != 'index.ts':
-                locale_name = file['name'].replace('.ts', '').replace('_', '')
-                antd_locales.add(locale_name)
+            name = file['name']
+            if name.endswith('.ts') and name != 'index.ts':
+                locale_name = name.replace('.ts', '').replace('_', '')
+                if locale_name_pattern.match(locale_name):
+                    antd_locales.add(locale_name)
     else:
         antd_locales = set()
 except:
@@ -47,9 +51,11 @@ try:
         files = json.loads(result.stdout)
         mui_locales = set()
         for file in files:
-            if file['name'].endswith('.ts') and file['name'] != 'index.ts':
-                locale_name = file['name'].replace('.ts', '')
-                mui_locales.add(locale_name)
+            name = file['name']
+            if name.endswith('.ts') and name != 'index.ts':
+                locale_name = name.replace('.ts', '')
+                if locale_name_pattern.match(locale_name):
+                    mui_locales.add(locale_name)
     else:
         mui_locales = set()
 except:

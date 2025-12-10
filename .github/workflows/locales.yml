@@ -1,4 +1,4 @@
-name: Update Locales
+name: locales
 
 on:
   push:
@@ -46,11 +46,13 @@ jobs:
 
       - name: Create issue
         if: steps.check.outcome == 'failure' && steps.check_issue.outputs.existing_issues == '0'
+        env:
+          ISSUE_BODY: ${{ steps.issue_body.outputs.issue_body }}
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issueBody = `${{ steps.issue_body.outputs.issue_body }}`;
+            const issueBody = process.env.ISSUE_BODY;
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
