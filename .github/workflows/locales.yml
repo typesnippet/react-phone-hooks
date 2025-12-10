@@ -1,0 +1,70 @@
+name: locales
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+
+      - name: Check locales
+        id: check
+        continue-on-error: true
+        run: python scripts/check-locales
+
+      - name: Read issue body
+        if: steps.check.outcome == 'failure'
+        id: issue_body
+        run: |
+          if [ -f /tmp/missing_locales_issue.md ]; then
+            echo "issue_body<<EOF" >> $GITHUB_OUTPUT
+            cat /tmp/missing_locales_issue.md >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check existing issue
+        if: steps.check.outcome == 'failure'
+        id: check_issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_COUNT=$(gh issue list --label "missing-locales" --state open --json number --jq 'length')
+          echo "existing_issues=$ISSUE_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Create issue
+        if: steps.check.outcome == 'failure' && steps.check_issue.outputs.existing_issues == '0'
+        env:
+          ISSUE_BODY: ${{ steps.issue_body.outputs.issue_body }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueBody = process.env.ISSUE_BODY;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Missing locale translations detected',
+              body: issueBody,
+              labels: ['missing-locales', 'translation', 'enhancement']
+            });
+
+      - name: Update issue
+        if: steps.check.outcome == 'failure' && steps.check_issue.outputs.existing_issues != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUMBER=$(gh issue list --label "missing-locales" --state open --json number --jq '.[0].number')
+          gh issue comment $ISSUE_NUMBER --body "The automated locale check has been run again."
