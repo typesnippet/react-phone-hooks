@@ -1,13 +1,11 @@
-name: Check Missing Locales
+name: Update Locales
 
 on:
   schedule:
-    # Run every Sunday at midnight UTC (similar to validation patterns workflow)
     - cron: "0 0 * * 0"
-  workflow_dispatch:  # Allow manual triggering
 
 jobs:
-  check-locales:
+  update:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,11 +18,18 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3
 
-      - name: Check for missing locales
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: cd development && npm install
+
+      - name: Check locales
         id: check
         continue-on-error: true
-        run: |
-          python scripts/check-missing-locales
+        run: python scripts/check-locales
 
       - name: Read issue body
         if: steps.check.outcome == 'failure'
@@ -36,24 +41,22 @@ jobs:
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
-      - name: Check if issue already exists
+      - name: Check existing issue
         if: steps.check.outcome == 'failure'
         id: check_issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Check for open issues with the label "missing-locales"
           ISSUE_COUNT=$(gh issue list --label "missing-locales" --state open --json number --jq 'length')
           echo "existing_issues=$ISSUE_COUNT" >> $GITHUB_OUTPUT
 
-      - name: Create GitHub Issue
+      - name: Create issue
         if: steps.check.outcome == 'failure' && steps.check_issue.outputs.existing_issues == '0'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issueBody = `${{ steps.issue_body.outputs.issue_body }}`;
-            
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -62,20 +65,10 @@ jobs:
               labels: ['missing-locales', 'translation', 'enhancement']
             });
 
-      - name: Update existing issue
+      - name: Update issue
         if: steps.check.outcome == 'failure' && steps.check_issue.outputs.existing_issues != '0'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Get the issue number
           ISSUE_NUMBER=$(gh issue list --label "missing-locales" --state open --json number --jq '.[0].number')
-          
-          # Add a comment to the existing issue
-          gh issue comment $ISSUE_NUMBER --body "🔄 **Updated Check Results**
-
-          The automated locale check has been run again. Please see the latest findings above or re-run the workflow for current status."
-
-      - name: All locales present
-        if: steps.check.outcome == 'success'
-        run: |
-          echo "✅ All locales are present! No missing locales detected."
+          gh issue comment $ISSUE_NUMBER --body "The automated locale check has been run again."
