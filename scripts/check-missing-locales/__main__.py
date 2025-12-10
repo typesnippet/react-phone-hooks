@@ -4,14 +4,11 @@ Script to detect missing locale files in react-phone-hooks by comparing
 against locales available in antd-phone-input and mui-phone-input dependencies.
 """
 
-import json
 import os
 import re
-import subprocess
 import sys
 from pathlib import Path
-from typing import Set, List, Dict
-from urllib.request import urlopen
+from typing import Set, Dict
 
 
 def get_existing_locales() -> Set[str]:
