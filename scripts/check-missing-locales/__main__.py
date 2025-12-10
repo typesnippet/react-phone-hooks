@@ -63,10 +63,29 @@ def get_mui_locales_from_package() -> Set[str]:
     the mui-phone locale.ts structure and inferring from MUI's locale module.
     
     Since MUI locales are accessed dynamically via "@mui/material/locale",
-    we need to check what locales are available in the package.
+    we try to extract them from the phone-hooks locale file or use a fallback list.
     """
-    # MUI Material has built-in locales that can be imported
+    project_root = Path(__file__).parent.parent.parent
+    phone_locale_file = project_root / "development" / "src" / "phone-hooks" / "locale.ts"
+    
+    # Try to extract from phone-hooks locale.ts if available
+    if phone_locale_file.exists():
+        try:
+            with open(phone_locale_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Extract exports from phone-hooks locale (same format as react-phone-hooks)
+            locale_pattern = r'^export const (\w+) = \{'
+            locales = set(re.findall(locale_pattern, content, re.MULTILINE))
+            
+            if locales:
+                return locales
+        except Exception as e:
+            print(f"Warning: Could not parse phone-hooks locale.ts: {e}")
+    
+    # Fallback: MUI Material has built-in locales that can be imported
     # Common MUI locales based on their documentation
+    # This list should be kept in sync with MUI Material's supported locales
     mui_locales = {
         'arEG', 'arSA', 'arSD', 'azAZ', 'bgBG', 'bnBD', 'caES', 'csCZ',
         'daDK', 'deDE', 'elGR', 'enUS', 'esES', 'etEE', 'faIR', 'fiFI',
