@@ -1,4 +1,8 @@
-export const lvLV = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.esES = exports.amET = exports.frBE = exports.nlNL = exports.ptPT = exports.koKR = exports.heIL = exports.zhCN = exports.zhHK = exports.fiFI = exports.daDK = exports.myMY = exports.skSK = exports.hrHR = exports.ukUA = exports.byBY = exports.azAZ = exports.caES = exports.taIN = exports.mkMK = exports.nnNO = exports.plPL = exports.nbNO = exports.bgBG = exports.beBY = exports.euES = exports.msMS = exports.hiIN = exports.isIS = exports.khKH = exports.frFR = exports.mnMN = exports.ptBR = exports.tkTK = exports.enUS = exports.enGB = exports.thTH = exports.mlIN = exports.frCA = exports.faIR = exports.idID = exports.ruRU = exports.myMM = exports.kuLatn = exports.kuIQ = exports.kmrIQ = exports.kkKZ = exports.kaGE = exports.msMY = exports.lvLV = void 0;
+exports.bnBD = exports.svSE = exports.knIN = exports.glES = exports.deDE = exports.neNP = exports.uzUZ = exports.zhTW = exports.etEE = exports.hyAM = exports.gaIE = exports.siLK = exports.slSI = exports.roRO = exports.urPK = exports.arSD = exports.viVN = exports.trTR = exports.csCZ = exports.elGR = exports.kmKH = exports.arEG = exports.jaJP = exports.ltLT = exports.kuCKB = exports.huHU = exports.nlBE = exports.itIT = exports.tlTL = exports.srRS = exports.arSA = void 0;
+exports.lvLV = {
     searchNotFound: "Valsts nav atrasta",
     searchPlaceholder: "Meklēt valsti",
     countries: {
@@ -235,9 +239,8 @@ export const lvLV = {
         "China": "Ķīna",
         "Tonga": "Tonga"
     },
-}
-
-export const msMY = {
+};
+exports.msMY = {
     searchNotFound: "Negara tidak dijumpai",
     searchPlaceholder: "Cari negara",
     countries: {
@@ -474,9 +477,8 @@ export const msMY = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const kaGE = {
+};
+exports.kaGE = {
     searchNotFound: "ქვეყანა ვერ მოიძებნა",
     searchPlaceholder: "ძებნა ქვეყნის",
     countries: {
@@ -713,9 +715,8 @@ export const kaGE = {
         "China": "ჩინეთი",
         "Tonga": "ტონგა"
     },
-}
-
-export const kkKZ = {
+};
+exports.kkKZ = {
     searchNotFound: "Ел табылмады",
     searchPlaceholder: "Елді іздеу",
     countries: {
@@ -952,9 +953,8 @@ export const kkKZ = {
         "China": "Қытай",
         "Tonga": "Тонга"
     },
-}
-
-export const kmrIQ = {
+};
+exports.kmrIQ = {
     searchNotFound: "Welatek nehat dîtin",
     searchPlaceholder: "Lêgerîn welatek",
     countries: {
@@ -1191,9 +1191,8 @@ export const kmrIQ = {
         "China": "Çîn",
         "Tonga": "Tonga"
     },
-}
-
-export const kuIQ = {
+};
+exports.kuIQ = {
     searchNotFound: "Welatek nehat dîtin",
     searchPlaceholder: "Lêgerîn welatek",
     countries: {
@@ -1430,9 +1429,8 @@ export const kuIQ = {
         "China": "Çîn",
         "Tonga": "Tonga"
     },
-}
-
-export const kuLatn = {
+};
+exports.kuLatn = {
     searchNotFound: "Welatek nehat dîtin",
     searchPlaceholder: "Lêgerîn welatek",
     countries: {
@@ -1669,9 +1667,8 @@ export const kuLatn = {
         "China": "Çîn",
         "Tonga": "Tonga"
     },
-}
-
-export const myMM = {
+};
+exports.myMM = {
     searchNotFound: "နိုင်ငံရှာမတွေ့ပါ",
     searchPlaceholder: "နိုင်ငံကို ရှာဖွေပါ",
     countries: {
@@ -1908,9 +1905,8 @@ export const myMM = {
         "China": "တရုတ်",
         "Tonga": "တောင်ဂါ"
     },
-}
-
-export const ruRU = {
+};
+exports.ruRU = {
     searchNotFound: "Страна не найдена",
     searchPlaceholder: "Поиск страны",
     countries: {
@@ -2147,9 +2143,8 @@ export const ruRU = {
         "China": "Китай",
         "Tonga": "Тонга"
     },
-}
-
-export const idID = {
+};
+exports.idID = {
     searchNotFound: "Negara tidak ditemukan",
     searchPlaceholder: "Cari negara",
     countries: {
@@ -2386,9 +2381,8 @@ export const idID = {
         "China": "Cina",
         "Tonga": "Tonga"
     },
-}
-
-export const faIR = {
+};
+exports.faIR = {
     searchNotFound: "کشوری پیدا نشد",
     searchPlaceholder: "جستجوی کشور",
     countries: {
@@ -2625,9 +2619,8 @@ export const faIR = {
         "China": "چین",
         "Tonga": "تونگا"
     },
-}
-
-export const frCA = {
+};
+exports.frCA = {
     searchNotFound: "Aucun pays trouvé",
     searchPlaceholder: "Rechercher un pays",
     countries: {
@@ -2864,9 +2857,8 @@ export const frCA = {
         "China": "Chine",
         "Tonga": "Tonga"
     },
-}
-
-export const mlIN = {
+};
+exports.mlIN = {
     searchNotFound: "രാജ്യം കണ്ടെത്തിയില്ല",
     searchPlaceholder: "രാജ്യം തിരയുക",
     countries: {
@@ -3103,9 +3095,8 @@ export const mlIN = {
         "China": "ചൈന",
         "Tonga": "ടോംഗ"
     },
-}
-
-export const thTH = {
+};
+exports.thTH = {
     searchNotFound: "ไม่พบประเทศ",
     searchPlaceholder: "ค้นหาประเทศ",
     countries: {
@@ -3342,9 +3333,8 @@ export const thTH = {
         "China": "จีน",
         "Tonga": "ตองกา"
     },
-}
-
-export const enGB = {
+};
+exports.enGB = {
     searchNotFound: "No country found",
     searchPlaceholder: "Search for a country",
     countries: {
@@ -3581,9 +3571,8 @@ export const enGB = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const enUS = {
+};
+exports.enUS = {
     searchNotFound: "No country found",
     searchPlaceholder: "Search for a country",
     countries: {
@@ -3820,9 +3809,8 @@ export const enUS = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const tkTK = {
+};
+exports.tkTK = {
     searchNotFound: "Ýurt tapylmady",
     searchPlaceholder: "Ýurt gözlemek",
     countries: {
@@ -4059,9 +4047,8 @@ export const tkTK = {
         "China": "Hytaý",
         "Tonga": "Tonga"
     },
-}
-
-export const ptBR = {
+};
+exports.ptBR = {
     searchNotFound: "Nenhum país encontrado",
     searchPlaceholder: "Pesquisar um país",
     countries: {
@@ -4298,9 +4285,8 @@ export const ptBR = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const mnMN = {
+};
+exports.mnMN = {
     searchNotFound: "Улс олдсонгүй",
     searchPlaceholder: "Улс хайх",
     countries: {
@@ -4537,9 +4523,8 @@ export const mnMN = {
         "China": "Хятад",
         "Tonga": "Тонга"
     },
-}
-
-export const frFR = {
+};
+exports.frFR = {
     searchNotFound: "Aucun pays trouvé",
     searchPlaceholder: "Rechercher un pays",
     countries: {
@@ -4776,9 +4761,8 @@ export const frFR = {
         "China": "Chine",
         "Tonga": "Tonga"
     },
-}
-
-export const khKH = {
+};
+exports.khKH = {
     searchNotFound: "រកមិនឃើញប្រទេស",
     searchPlaceholder: "ស្វែងរកប្រទេស",
     countries: {
@@ -5015,9 +4999,8 @@ export const khKH = {
         "China": "ចិន",
         "Tonga": "តុងហ្គា"
     },
-}
-
-export const isIS = {
+};
+exports.isIS = {
     searchNotFound: "Engin land fannst",
     searchPlaceholder: "Leita að landi",
     countries: {
@@ -5254,9 +5237,8 @@ export const isIS = {
         "China": "Kína",
         "Tonga": "Tonga"
     },
-}
-
-export const hiIN = {
+};
+exports.hiIN = {
     searchNotFound: "कोई देश नहीं मिला",
     searchPlaceholder: "देश खोजें",
     countries: {
@@ -5493,9 +5475,8 @@ export const hiIN = {
         "China": "चीन",
         "Tonga": "टोंगा"
     },
-}
-
-export const msMS = {
+};
+exports.msMS = {
     searchNotFound: "Tiada negara ditemui",
     searchPlaceholder: "Cari negara",
     countries: {
@@ -5732,9 +5713,8 @@ export const msMS = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const euES = {
+};
+exports.euES = {
     searchNotFound: "Ez da herrialderik aurkitu",
     searchPlaceholder: "Bilatu herrialdea",
     countries: {
@@ -5971,8 +5951,8 @@ export const euES = {
         "China": "Txina",
         "Tonga": "Tonga"
     },
-}
-export const beBY = {
+};
+exports.beBY = {
     searchNotFound: "Краіна не знойдзена",
     searchPlaceholder: "Шукаць краіну",
     countries: {
@@ -6209,9 +6189,8 @@ export const beBY = {
         "China": "Кітай",
         "Tonga": "Тонга"
     },
-}
-
-export const bgBG = {
+};
+exports.bgBG = {
     searchNotFound: "Не е намерена държава",
     searchPlaceholder: "Търсене на държава",
     countries: {
@@ -6448,9 +6427,8 @@ export const bgBG = {
         "China": "Китай",
         "Tonga": "Тонга"
     },
-}
-
-export const nbNO = {
+};
+exports.nbNO = {
     searchNotFound: "Ingen land funnet",
     searchPlaceholder: "Søk etter land",
     countries: {
@@ -6687,9 +6665,8 @@ export const nbNO = {
         "China": "Kina",
         "Tonga": "Tonga"
     },
-}
-
-export const plPL = {
+};
+exports.plPL = {
     searchNotFound: "Nie znaleziono kraju",
     searchPlaceholder: "Szukaj kraju",
     countries: {
@@ -6926,9 +6903,8 @@ export const plPL = {
         "China": "Chiny",
         "Tonga": "Tonga"
     },
-}
-
-export const nnNO = {
+};
+exports.nnNO = {
     searchNotFound: "Ingen land funnet",
     searchPlaceholder: "Søk etter land",
     countries: {
@@ -7165,9 +7141,8 @@ export const nnNO = {
         "China": "Kina",
         "Tonga": "Tonga"
     },
-}
-
-export const mkMK = {
+};
+exports.mkMK = {
     searchNotFound: "Не е најдена држава",
     searchPlaceholder: "Пребарај држава",
     countries: {
@@ -7404,9 +7379,8 @@ export const mkMK = {
         "China": "Кина",
         "Tonga": "Тонга"
     },
-}
-
-export const taIN = {
+};
+exports.taIN = {
     searchNotFound: "நாடு கிடைக்கவில்லை",
     searchPlaceholder: "நாட்டைத் தேடு",
     countries: {
@@ -7643,9 +7617,8 @@ export const taIN = {
         "China": "சீனா",
         "Tonga": "டோங்கா"
     },
-}
-
-export const caES = {
+};
+exports.caES = {
     searchNotFound: "Cap país trobat",
     searchPlaceholder: "Cerca un país",
     countries: {
@@ -7882,9 +7855,8 @@ export const caES = {
         "China": "Xina",
         "Tonga": "Tonga"
     },
-}
-
-export const azAZ = {
+};
+exports.azAZ = {
     searchNotFound: "Heç bir ölkə tapılmadı",
     searchPlaceholder: "Ölkə axtar",
     countries: {
@@ -8121,9 +8093,8 @@ export const azAZ = {
         "China": "Çin",
         "Tonga": "Tonqa"
     },
-}
-
-export const byBY = {
+};
+exports.byBY = {
     searchNotFound: "Краіна не знойдзена",
     searchPlaceholder: "Шукаць краіну",
     countries: {
@@ -8360,9 +8331,8 @@ export const byBY = {
         "China": "Кітай",
         "Tonga": "Тонга"
     },
-}
-
-export const ukUA = {
+};
+exports.ukUA = {
     searchNotFound: "Країну не знайдено",
     searchPlaceholder: "Шукати країну",
     countries: {
@@ -8599,9 +8569,8 @@ export const ukUA = {
         "China": "Китай",
         "Tonga": "Тонга"
     },
-}
-
-export const hrHR = {
+};
+exports.hrHR = {
     searchNotFound: "Nijedna država nije pronađena",
     searchPlaceholder: "Traži državu",
     countries: {
@@ -8838,9 +8807,8 @@ export const hrHR = {
         "China": "Kina",
         "Tonga": "Tonga"
     },
-}
-
-export const skSK = {
+};
+exports.skSK = {
     searchNotFound: "Nenašla sa žiadna krajina",
     searchPlaceholder: "Hľadať krajinu",
     countries: {
@@ -9077,9 +9045,8 @@ export const skSK = {
         "China": "Čína",
         "Tonga": "Tonga"
     },
-}
-
-export const myMY = {
+};
+exports.myMY = {
     searchNotFound: "နိုင်ငံမတွေ့ပါ",
     searchPlaceholder: "နိုင်ငံကို ရှာဖွေပါ",
     countries: {
@@ -9316,9 +9283,8 @@ export const myMY = {
         "China": "တရုတ်",
         "Tonga": "တွန်းဂါ"
     },
-}
-
-export const daDK = {
+};
+exports.daDK = {
     searchNotFound: "Ingen lande fundet",
     searchPlaceholder: "Søg efter et land",
     countries: {
@@ -9555,9 +9521,8 @@ export const daDK = {
         "China": "Kina",
         "Tonga": "Tonga"
     },
-}
-
-export const fiFI = {
+};
+exports.fiFI = {
     searchNotFound: "Ei löytynyt maata",
     searchPlaceholder: "Etsi maata",
     countries: {
@@ -9794,9 +9759,8 @@ export const fiFI = {
         "China": "Kiina",
         "Tonga": "Tonga"
     },
-}
-
-export const zhHK = {
+};
+exports.zhHK = {
     searchNotFound: "找不到國家",
     searchPlaceholder: "搜尋國家",
     countries: {
@@ -10033,9 +9997,8 @@ export const zhHK = {
         "China": "中國",
         "Tonga": "湯加"
     },
-}
-
-export const zhCN = {
+};
+exports.zhCN = {
     searchNotFound: "找不到国家",
     searchPlaceholder: "搜索国家",
     countries: {
@@ -10272,9 +10235,8 @@ export const zhCN = {
         "China": "中国",
         "Tonga": "汤加"
     },
-}
-
-export const heIL = {
+};
+exports.heIL = {
     searchNotFound: "לא נמצאה מדינה",
     searchPlaceholder: "חפש מדינה",
     countries: {
@@ -10511,9 +10473,8 @@ export const heIL = {
         "China": "סין",
         "Tonga": "טונגה"
     },
-}
-
-export const koKR = {
+};
+exports.koKR = {
     searchNotFound: "국가를 찾을 수 없습니다",
     searchPlaceholder: "국가 검색",
     countries: {
@@ -10750,9 +10711,8 @@ export const koKR = {
         "China": "중국",
         "Tonga": "통가"
     },
-}
-
-export const ptPT = {
+};
+exports.ptPT = {
     searchNotFound: "Nenhum país encontrado",
     searchPlaceholder: "Pesquisar país",
     countries: {
@@ -10989,9 +10949,8 @@ export const ptPT = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const nlNL = {
+};
+exports.nlNL = {
     searchNotFound: "Geen landen gevonden",
     searchPlaceholder: "Zoek een land",
     countries: {
@@ -11228,9 +11187,8 @@ export const nlNL = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const frBE = {
+};
+exports.frBE = {
     searchNotFound: "Aucun pays trouvé",
     searchPlaceholder: "Rechercher un pays",
     countries: {
@@ -11467,9 +11425,8 @@ export const frBE = {
         "China": "Chine",
         "Tonga": "Tonga"
     },
-}
-
-export const amET = {
+};
+exports.amET = {
     searchNotFound: "ምንም ሀገር አልተገኘም",
     searchPlaceholder: "ሀገርን ፈልግ",
     countries: {
@@ -11706,9 +11663,8 @@ export const amET = {
         "China": "ቻይና",
         "Tonga": "ቶንጋ"
     },
-}
-
-export const esES = {
+};
+exports.esES = {
     searchNotFound: "No se encontró ningún país",
     searchPlaceholder: "Buscar un país",
     countries: {
@@ -11945,9 +11901,8 @@ export const esES = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const arSA = {
+};
+exports.arSA = {
     searchNotFound: "لم يتم العثور على أي بلد",
     searchPlaceholder: "البحث عن بلد",
     countries: {
@@ -12184,9 +12139,8 @@ export const arSA = {
         "China": "الصين",
         "Tonga": "تونغا"
     },
-}
-
-export const srRS = {
+};
+exports.srRS = {
     searchNotFound: "Nije pronađena nijedna zemlja",
     searchPlaceholder: "Pretraži zemlju",
     countries: {
@@ -12423,9 +12377,8 @@ export const srRS = {
         "China": "Kina",
         "Tonga": "Tonga"
     },
-}
-
-export const tlTL = {
+};
+exports.tlTL = {
     searchNotFound: "Walang nahanap na bansa",
     searchPlaceholder: "Maghanap ng bansa",
     countries: {
@@ -12662,9 +12615,8 @@ export const tlTL = {
         "China": "Tsina",
         "Tonga": "Tonga"
     },
-}
-
-export const itIT = {
+};
+exports.itIT = {
     searchNotFound: "Nessun paese trovato",
     searchPlaceholder: "Cerca un paese",
     countries: {
@@ -12901,9 +12853,8 @@ export const itIT = {
         "China": "Cina",
         "Tonga": "Tonga"
     },
-}
-
-export const nlBE = {
+};
+exports.nlBE = {
     searchNotFound: "Geen landen gevonden",
     searchPlaceholder: "Zoek een land",
     countries: {
@@ -13140,9 +13091,8 @@ export const nlBE = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const huHU = {
+};
+exports.huHU = {
     searchNotFound: "Nem található ország",
     searchPlaceholder: "Keresés egy országban",
     countries: {
@@ -13379,9 +13329,8 @@ export const huHU = {
         "China": "Kína",
         "Tonga": "Tonga"
     },
-}
-
-export const kuCKB = {
+};
+exports.kuCKB = {
     searchNotFound: "هیچ وڵاتێک نەدۆزرایەوە",
     searchPlaceholder: "بگەڕێ بۆ وڵات",
     countries: {
@@ -13618,9 +13567,8 @@ export const kuCKB = {
         "China": "چین",
         "Tonga": "تۆنگا"
     },
-}
-
-export const ltLT = {
+};
+exports.ltLT = {
     searchNotFound: "Šalis nerasta",
     searchPlaceholder: "Ieškoti šalies",
     countries: {
@@ -13857,9 +13805,8 @@ export const ltLT = {
         "China": "Kinija",
         "Tonga": "Tonga"
     },
-}
-
-export const jaJP = {
+};
+exports.jaJP = {
     searchNotFound: "国が見つかりません",
     searchPlaceholder: "国を探す",
     countries: {
@@ -14096,9 +14043,8 @@ export const jaJP = {
         "China": "中国",
         "Tonga": "トンガ"
     },
-}
-
-export const arEG = {
+};
+exports.arEG = {
     searchNotFound: "لم يتم العثور على أي بلد",
     searchPlaceholder: "ابحث عن بلد",
     countries: {
@@ -14335,9 +14281,8 @@ export const arEG = {
         "China": "الصين",
         "Tonga": "تونغا"
     },
-}
-
-export const kmKH = {
+};
+exports.kmKH = {
     searchNotFound: "រកមិនឃើញប្រទេស",
     searchPlaceholder: "ស្វែងរកប្រទេស",
     countries: {
@@ -14574,9 +14519,8 @@ export const kmKH = {
         "China": "ចិន",
         "Tonga": "តុងហ្គា"
     },
-}
-
-export const elGR = {
+};
+exports.elGR = {
     searchNotFound: "Δεν βρέθηκε χώρα",
     searchPlaceholder: "Αναζήτηση χώρας",
     countries: {
@@ -14813,9 +14757,8 @@ export const elGR = {
         "China": "Κίνα",
         "Tonga": "Τόνγκα"
     },
-}
-
-export const csCZ = {
+};
+exports.csCZ = {
     searchNotFound: "Země nenalezena",
     searchPlaceholder: "Vyhledat zemi",
     countries: {
@@ -15052,9 +14995,8 @@ export const csCZ = {
         "China": "Čína",
         "Tonga": "Tonga"
     },
-}
-
-export const trTR = {
+};
+exports.trTR = {
     searchNotFound: "Ülke bulunamadı",
     searchPlaceholder: "Ülke arayın",
     countries: {
@@ -15291,9 +15233,8 @@ export const trTR = {
         "China": "Çin",
         "Tonga": "Tonga"
     },
-}
-
-export const viVN = {
+};
+exports.viVN = {
     searchNotFound: "Không tìm thấy quốc gia",
     searchPlaceholder: "Tìm kiếm quốc gia",
     countries: {
@@ -15530,9 +15471,8 @@ export const viVN = {
         "China": "Trung Quốc",
         "Tonga": "Tonga"
     },
-}
-
-export const arSD = {
+};
+exports.arSD = {
     searchNotFound: "لم يتم العثور على أي بلد",
     searchPlaceholder: "ابحث عن بلد",
     countries: {
@@ -15769,9 +15709,8 @@ export const arSD = {
         "China": "الصين",
         "Tonga": "تونغا"
     },
-}
-
-export const urPK = {
+};
+exports.urPK = {
     searchNotFound: "کوئی ملک نہیں ملا",
     searchPlaceholder: "ملک تلاش کریں",
     countries: {
@@ -16008,9 +15947,8 @@ export const urPK = {
         "China": "چین",
         "Tonga": "ٹونگا"
     },
-}
-
-export const roRO = {
+};
+exports.roRO = {
     searchNotFound: "Țara nu a fost găsită",
     searchPlaceholder: "Căutați o țară",
     countries: {
@@ -16247,9 +16185,8 @@ export const roRO = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const slSI = {
+};
+exports.slSI = {
     searchNotFound: "Država ni bila najdena",
     searchPlaceholder: "Išči državo",
     countries: {
@@ -16486,9 +16423,8 @@ export const slSI = {
         "China": "Kitajska",
         "Tonga": "Tonga"
     },
-}
-
-export const siLK = {
+};
+exports.siLK = {
     searchNotFound: "රට සොයා ගැනීමට නොමැත",
     searchPlaceholder: "රටක් සෙවීමට",
     countries: {
@@ -16725,9 +16661,8 @@ export const siLK = {
         "China": "චීනය",
         "Tonga": "ටොංගා"
     },
-}
-
-export const gaIE = {
+};
+exports.gaIE = {
     searchNotFound: "Ní bhfuarthas tír",
     searchPlaceholder: "Cuardaigh tír",
     countries: {
@@ -16964,9 +16899,8 @@ export const gaIE = {
         "China": "An tSín",
         "Tonga": "Tonga"
     },
-}
-
-export const hyAM = {
+};
+exports.hyAM = {
     searchNotFound: "Երկիրը չի գտնվել",
     searchPlaceholder: "Որոնել երկիր",
     countries: {
@@ -17203,9 +17137,8 @@ export const hyAM = {
         "China": "Չինաստան",
         "Tonga": "Տոնգա"
     },
-}
-
-export const etEE = {
+};
+exports.etEE = {
     searchNotFound: "Riiki ei leitud",
     searchPlaceholder: "Otsi riiki",
     countries: {
@@ -17442,9 +17375,8 @@ export const etEE = {
         "China": "Hiina",
         "Tonga": "Tonga"
     },
-}
-
-export const zhTW = {
+};
+exports.zhTW = {
     searchNotFound: "找不到國家",
     searchPlaceholder: "搜尋國家",
     countries: {
@@ -17681,9 +17613,8 @@ export const zhTW = {
         "China": "中國",
         "Tonga": "東加"
     },
-}
-
-export const uzUZ = {
+};
+exports.uzUZ = {
     searchNotFound: "Davlat topilmadi",
     searchPlaceholder: "Davlat qidiring",
     countries: {
@@ -17920,9 +17851,8 @@ export const uzUZ = {
         "China": "Xitoy",
         "Tonga": "Tonga"
     },
-}
-
-export const neNP = {
+};
+exports.neNP = {
     searchNotFound: "देश फेला परेन",
     searchPlaceholder: "देश खोज्नुहोस्",
     countries: {
@@ -18159,9 +18089,8 @@ export const neNP = {
         "China": "चीन",
         "Tonga": "टोंगा"
     },
-}
-
-export const deDE = {
+};
+exports.deDE = {
     searchNotFound: "Land nicht gefunden",
     searchPlaceholder: "Land suchen",
     countries: {
@@ -18398,9 +18327,8 @@ export const deDE = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const glES = {
+};
+exports.glES = {
     searchNotFound: "Non se atopou o país",
     searchPlaceholder: "Buscar país",
     countries: {
@@ -18637,9 +18565,8 @@ export const glES = {
         "China": "China",
         "Tonga": "Tonga"
     },
-}
-
-export const knIN = {
+};
+exports.knIN = {
     searchNotFound: "ದೇಶ ಕಂಡುಬಂದಿಲ್ಲ",
     searchPlaceholder: "ದೇಶವನ್ನು ಹುಡುಕಿ",
     countries: {
@@ -18876,9 +18803,8 @@ export const knIN = {
         "China": "ಚೀನಾ",
         "Tonga": "ಟೋಂಗಾ"
     },
-}
-
-export const svSE = {
+};
+exports.svSE = {
     searchNotFound: "Land hittades inte",
     searchPlaceholder: "Sök land",
     countries: {
@@ -19115,9 +19041,8 @@ export const svSE = {
         "China": "Kina",
         "Tonga": "Tonga"
     },
-}
-
-export const bnBD = {
+};
+exports.bnBD = {
     searchNotFound: "দেশ পাওয়া যায়নি",
     searchPlaceholder: "দেশ অনুসন্ধান করুন",
     countries: {
@@ -19354,4 +19279,4 @@ export const bnBD = {
         "China": "চীন",
         "Tonga": "টোঙ্গা"
     },
-}
+};
