@@ -20,14 +20,6 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Install dependencies
-        run: cd development && npm install
-
       - name: Check locales
         id: check
         continue-on-error: true

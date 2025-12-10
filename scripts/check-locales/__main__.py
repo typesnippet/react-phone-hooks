@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import subprocess
@@ -7,8 +8,6 @@ from pathlib import Path
 
 project_root = Path(__file__).parent.parent.parent
 locale_file = project_root / "src" / "locale.ts"
-ant_locale_file = project_root / "development" / "src" / "ant-phone" / "locale.ts"
-
 
 with open(locale_file, 'r') as f:
     content = f.read()
@@ -16,26 +15,45 @@ with open(locale_file, 'r') as f:
 locale_pattern = r'^export const (\w+) = \{'
 existing_locales = set(re.findall(locale_pattern, content, re.MULTILINE))
 
-with open(ant_locale_file, 'r') as f:
-    content = f.read()
-
-import_pattern = r'^import (\w+) from "antd/es/locale/'
-antd_locales = set(re.findall(import_pattern, content, re.MULTILINE))
+try:
+    result = subprocess.run(
+        ['curl', '-s', '-H', 'User-Agent: react-phone-hooks', 
+         'https://api.github.com/repos/ant-design/ant-design/contents/components/locale'],
+        capture_output=True,
+        text=True,
+        timeout=30
+    )
+    if result.returncode == 0 and result.stdout.strip():
+        files = json.loads(result.stdout)
+        antd_locales = set()
+        for file in files:
+            if file['name'].endswith('.ts') and file['name'] != 'index.ts':
+                locale_name = file['name'].replace('.ts', '').replace('_', '')
+                antd_locales.add(locale_name)
+    else:
+        antd_locales = set()
+except:
+    antd_locales = set()
 
 try:
     result = subprocess.run(
-        ['node', '-e', 'const locale = require("@mui/material/locale"); console.log(Object.keys(locale).join(","))'],
-        cwd=project_root / "development",
+        ['curl', '-s', '-H', 'User-Agent: react-phone-hooks',
+         'https://api.github.com/repos/mui/material-ui/contents/packages/mui-material/src/locale'],
         capture_output=True,
         text=True,
-        timeout=10
+        timeout=30
     )
     if result.returncode == 0 and result.stdout.strip():
-        mui_locales = set(result.stdout.strip().split(','))
+        files = json.loads(result.stdout)
+        mui_locales = set()
+        for file in files:
+            if file['name'].endswith('.ts') and file['name'] != 'index.ts':
+                locale_name = file['name'].replace('.ts', '')
+                mui_locales.add(locale_name)
     else:
-        mui_locales = existing_locales
+        mui_locales = set()
 except:
-    mui_locales = existing_locales
+    mui_locales = set()
 
 missing_from_antd = antd_locales - existing_locales
 missing_from_mui = mui_locales - existing_locales
