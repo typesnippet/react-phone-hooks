@@ -54,9 +54,17 @@ export const getDefaultISO2Code = () => {
     return (timezones[Intl.DateTimeFormat().resolvedOptions().timeZone as keyof typeof timezones] || "") || "us";
 }
 
+export const hasFixedAreaCode = (pattern: string): boolean => {
+    /** Checks if the format pattern has a fixed area code (digits in parentheses) */
+    const match = pattern.match(/\(([^)]+)\)/);
+    return match != null && /\d/.test(match[1]);
+}
+
 export const parsePhoneNumber = (formattedNumber: string, countriesList: typeof countries = countries, country: any = null): PhoneNumber => {
     const value = getRawValue(formattedNumber);
-    const isoCode = getMetadata(value, countriesList, country)?.[0] || getDefaultISO2Code();
+    const metadata = getMetadata(value, countriesList, country);
+    const isoCode = metadata?.[0] || getDefaultISO2Code();
+    const formatPattern = metadata?.[3] || "";
     const countryCodePattern = /\+\d+/;
     const areaCodePattern = /^\+\d+\s\(?(\d+)/;
 
@@ -66,7 +74,7 @@ export const parsePhoneNumber = (formattedNumber: string, countriesList: typeof 
 
     /** Converts the parsed values of the country and area codes to integers if values present */
     const countryCode = countryCodeMatch.length > 0 ? parseInt(countryCodeMatch[0]) : null;
-    const areaCode = areaCodeMatch.length > 1 ? areaCodeMatch[1] : null;
+    const areaCode = hasFixedAreaCode(formatPattern) && areaCodeMatch.length > 1 ? areaCodeMatch[1] : null;
 
     /** Parses the phone number by removing the country and area codes from the formatted value */
     const phoneNumberPattern = new RegExp(`^${countryCode}${(areaCode || "")}(\\d+)`);
