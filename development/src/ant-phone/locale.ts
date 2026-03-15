@@ -3,6 +3,7 @@ import bnBD from "antd/es/locale/bn_BD";
 import csCZ from "antd/es/locale/cs_CZ";
 import elGR from "antd/es/locale/el_GR";
 import esES from "antd/es/locale/es_ES";
+import esUS from "antd/es/locale/es_US";
 import faIR from "antd/es/locale/fa_IR";
 import frCA from "antd/es/locale/fr_CA";
 import glES from "antd/es/locale/gl_ES";
@@ -68,7 +69,7 @@ import zhHK from "antd/es/locale/zh_HK";
 import * as phoneLocale from "../phone-hooks/locale";
 
 const locale = {
-    arEG, bnBD, csCZ, elGR, esES, faIR, frCA, glES, hrHR, idID, jaJP, kmKH, koKR, lvLV,
+    arEG, bnBD, csCZ, elGR, esES, esUS, faIR, frCA, glES, hrHR, idID, jaJP, kmKH, koKR, lvLV,
     mnMN, nbNO, nlNL, ptPT, siLK, srRS, thTH, ukUA, viVN, zhTW, azAZ, byBY, daDK, enGB,
     etEE, fiFI, frFR, heIL, huHU, isIS, kaGE, kmrIQ, kuIQ, mkMK, msMY, neNP, plPL, roRO,
     skSK, svSE, tkTK, urPK, zhCN, bgBG, caES, deDE, enUS, frBE, gaIE, hiIN, hyAM, itIT,
