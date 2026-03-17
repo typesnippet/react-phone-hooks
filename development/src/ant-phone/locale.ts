@@ -3,7 +3,8 @@
 import enUS from "antd/es/locale/en_US";
 import * as phoneLocale from "../phone-hooks/locale";
 
-type Locale = keyof typeof phoneLocale;
+export type Locale = keyof typeof phoneLocale;
+export {phoneLocale};
 
 /**
  * @deprecated The localization is handled automatically - use the official way.
