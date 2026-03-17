@@ -4,11 +4,11 @@ import theme from "antd/es/theme";
 import Input from "antd/es/input";
 import Button from "antd/es/button";
 import Card from "antd/es/card/Card";
+import frFR from "antd/es/locale/fr_FR";
 import FormItem from "antd/es/form/FormItem";
 import ConfigProvider from "antd/es/config-provider";
 
 import PhoneInput from "./ant-phone";
-import locale from "./ant-phone/locale";
 
 import "antd/dist/reset.css";
 
@@ -33,7 +33,7 @@ const AntDemo = () => {
 
     return (
         <ConfigProvider
-            locale={locale("frFR")}
+            locale={frFR}
             theme={{algorithm: algorithm === "defaultAlgorithm" ? theme.defaultAlgorithm : theme.darkAlgorithm}}>
             <Card style={{height: "100%", borderRadius: 0, border: "none"}} styles={{body: {padding: 0}}}>
                 <div style={{margin: 20, maxWidth: 400}}>
