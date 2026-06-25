@@ -1,10 +1,8 @@
 "use client";
 
-import {ChangeEvent, KeyboardEvent, useCallback, useMemo, useRef, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
 
-import {PhoneNumber, usePhoneOptions} from "./types";
-
-import * as phoneLocale from "./locale";
+import {PhoneNumber, PhoneLocalization, usePhoneOptions} from "./types";
 import countries from "./metadata/countries.json";
 import timezones from "./metadata/timezones.json";
 import validations from "./metadata/validations.json";
@@ -130,6 +128,18 @@ export const usePhone = ({
     const defaultValueState = defaultValue || countries.find(([iso]) => iso === defaultMetadata?.[0])?.[2] as string;
 
     const [value, setValue] = useState<string>(defaultValueState);
+    const [localeData, setLocaleData] = useState<PhoneLocalization | null>(null);
+
+    useEffect(() => {
+        if (locale) {
+          import("./locale").then((locales: Record<string, PhoneLocalization>) => {
+            const result = locales[locale] || null
+            setLocaleData(result)
+          });
+        } else {
+            setLocaleData(null);
+        }
+    }, [locale]);
 
     const countriesOnly = useMemo(() => {
         const allowList = onlyCountries.length > 0 ? onlyCountries : countries.map(([iso]) => iso);
@@ -141,9 +151,8 @@ export const usePhone = ({
     const countriesList = useMemo(() => {
         const filteredCountries = countriesOnly.filter(([_1, name, dial, mask]) => {
             const q = query.toLowerCase();
-            const countries = locale && ((phoneLocale as any)[locale])?.countries;
-            const localized = countries && (countries[name] || "").toLowerCase();
-            return [localized, name.toLowerCase(), dial, mask].some(component => component.includes(q));
+            const localized = localeData?.countries?.[name]?.toLowerCase();
+            return [localized, name.toLowerCase(), dial, mask].some(component => component?.includes(q));
         });
         const seen = new Set();
         const whitelistCountries = [
@@ -152,7 +161,7 @@ export const usePhone = ({
         ];
         if (!distinct) return whitelistCountries;
         return whitelistCountries.filter(([iso]) => !seen.has(iso) && seen.add(iso));
-    }, [countriesOnly, preferredCountries, distinct, locale, query])
+    }, [countriesOnly, preferredCountries, distinct, localeData, query])
 
     const metadata = useMemo(() => {
         const calculatedMetadata = getMetadata(getRawValue(value), countriesList, countryCode);

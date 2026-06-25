@@ -9,6 +9,12 @@ export interface PhoneNumber {
     valid?(strict?: boolean): boolean;
 }
 
+export interface PhoneLocalization {
+    searchNotFound: string;
+    searchPlaceholder: string;
+    countries: Record<string, string>;
+}
+
 export interface usePhoneOptions {
     query?: string;
     locale?: string;
