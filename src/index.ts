@@ -132,9 +132,8 @@ export const usePhone = ({
 
     useEffect(() => {
         if (locale) {
-          import("./locale").then((locales: Record<string, PhoneLocalization>) => {
-            const result = locales[locale] || null
-            setLocaleData(result)
+          import(`./locales/${locale}`).then((mod: Record<string, PhoneLocalization>) => {
+            setLocaleData(mod[locale] || null);
           });
         } else {
             setLocaleData(null);

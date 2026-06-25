@@ -57,6 +57,7 @@
     "types*",
     "styles*",
     "locale*",
+    "locales",
     "LICENSE",
     "metadata",
     "README.md",
@@ -66,7 +67,7 @@
   "scripts": {
     "rename": "bash -c 'for file in *.js; do mv $file \"${file%.js}.$0.js\"; done'",
     "build": "tsc --module commonjs && npm run rename -- cjs && tsc --declaration",
-    "prebuild": "rm -r metadata stylesheet.json index* locale* types* styles* || true",
+    "prebuild": "rm -r metadata stylesheet.json index* locale* locales types* styles* || true",
     "postbuild": "cp resources/stylesheet.json stylesheet.json",
     "test": "jest --config jestconfig.json"
   },
