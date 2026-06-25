@@ -7,13 +7,9 @@ from pathlib import Path
 
 
 project_root = Path(__file__).parent.parent.parent
-locale_file = project_root / "src" / "locale.ts"
+locales_dir = project_root / "src" / "locales"
 
-with open(locale_file, 'r') as f:
-    content = f.read()
-
-locale_pattern = r'^export const (\w+) = \{'
-existing_locales = set(re.findall(locale_pattern, content, re.MULTILINE))
+existing_locales = {f.stem for f in locales_dir.glob("*.json")}
 
 locale_name_pattern = re.compile(r'^[a-z]{2,3}[A-Z][A-Za-z]{1,3}$')
 
