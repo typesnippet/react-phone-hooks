@@ -42,13 +42,6 @@
         "default": "./styles.d.ts"
       }
     },
-    "./locale": {
-      "import": "./locale.js",
-      "require": "./locale.cjs.js",
-      "types": {
-        "default": "./locale.d.ts"
-      }
-    },
     "./stylesheet.json": "./stylesheet.json",
     "./package.json": "./package.json"
   },
@@ -56,7 +49,6 @@
     "index*",
     "types*",
     "styles*",
-    "locale*",
     "locales",
     "LICENSE",
     "metadata",
@@ -67,7 +59,7 @@
   "scripts": {
     "rename": "bash -c 'for file in *.js; do mv $file \"${file%.js}.$0.js\"; done'",
     "build": "tsc --module commonjs && npm run rename -- cjs && tsc --declaration",
-    "prebuild": "rm -r metadata stylesheet.json index* locale* locales types* styles* || true",
+    "prebuild": "rm -r metadata stylesheet.json index* locales types* styles* || true",
     "postbuild": "cp resources/stylesheet.json stylesheet.json",
     "test": "jest --config jestconfig.json"
   },
