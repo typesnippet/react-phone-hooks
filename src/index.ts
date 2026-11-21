@@ -11,13 +11,13 @@ import validations from "./metadata/validations.json";
 
 const slots = new Set(".");
 
-export const getMetadata = (rawValue: string, countriesList: typeof countries = countries, country: any = null) => {
+export const getMetadata = (rawValue: string, countriesList: string[][] = countries, country: any = null) => {
     country = country == null && rawValue.startsWith("44") ? "gb" : country;
     if (country != null) countriesList = countriesList.filter((c) => c[0] === country);
     return [...countriesList].sort((a, b) => b[2].length - a[2].length).find((c) => rawValue.startsWith(c[2]));
 }
 
-export const getCountry = (countryCode: keyof typeof countries) => {
+export const getCountry = (countryCode: string) => {
     return countries.find(([iso]) => iso === countryCode);
 }
 
@@ -54,7 +54,7 @@ export const getDefaultISO2Code = () => {
     return (timezones[Intl.DateTimeFormat().resolvedOptions().timeZone as keyof typeof timezones] || "") || "us";
 }
 
-export const parsePhoneNumber = (formattedNumber: string, countriesList: typeof countries = countries, country: any = null): PhoneNumber => {
+export const parsePhoneNumber = (formattedNumber: string, countriesList: string[][] = countries, country: any = null): PhoneNumber => {
     const value = getRawValue(formattedNumber);
     const isoCode = getMetadata(value, countriesList, country)?.[0] || getDefaultISO2Code();
     const countryCodePattern = /\+\d+/;
