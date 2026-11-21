@@ -21,3 +21,17 @@ export interface usePhoneOptions {
     disableParentheses?: boolean;
     initialValue?: PhoneNumber | string;
 }
+
+type PhoneNumberType = PhoneNumber;
+type usePhoneOptionsType = usePhoneOptions;
+
+/**
+ * Keeps `import types from "react-phone-hooks/types"` (then `types.PhoneNumber`) compiling. It used to rely on a
+ * synthetic default import, which TypeScript disallows now that the declarations are ES modules.
+ */
+declare namespace types {
+    export type PhoneNumber = PhoneNumberType;
+    export type usePhoneOptions = usePhoneOptionsType;
+}
+
+export default types;

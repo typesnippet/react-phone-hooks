@@ -1,7 +1,8 @@
 {
-  "version": "0.1.22",
+  "version": "0.1.23",
   "name": "react-phone-hooks",
   "description": "React hooks and utility functions for parsing and validating phone numbers.",
+  "type": "module",
   "keywords": [
     "react",
     "phone",
@@ -22,31 +23,43 @@
   },
   "exports": {
     ".": {
-      "import": "./index.js",
-      "require": "./index.cjs.js",
-      "types": {
-        "default": "./index.d.ts"
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      },
+      "require": {
+        "types": "./index.d.cts",
+        "default": "./index.cjs"
       }
     },
     "./types": {
-      "import": "./types.js",
-      "require": "./types.cjs.js",
-      "types": {
-        "default": "./types.d.ts"
+      "import": {
+        "types": "./types.d.ts",
+        "default": "./types.js"
+      },
+      "require": {
+        "types": "./types.d.cts",
+        "default": "./types.cjs"
       }
     },
     "./styles": {
-      "import": "./styles.js",
-      "require": "./styles.cjs.js",
-      "types": {
-        "default": "./styles.d.ts"
+      "import": {
+        "types": "./styles.d.ts",
+        "default": "./styles.js"
+      },
+      "require": {
+        "types": "./styles.d.cts",
+        "default": "./styles.cjs"
       }
     },
     "./locale": {
-      "import": "./locale.js",
-      "require": "./locale.cjs.js",
-      "types": {
-        "default": "./locale.d.ts"
+      "import": {
+        "types": "./locale.d.ts",
+        "default": "./locale.js"
+      },
+      "require": {
+        "types": "./locale.d.cts",
+        "default": "./locale.cjs"
       }
     },
     "./stylesheet.json": "./stylesheet.json",
@@ -64,11 +77,11 @@
     "stylesheet.json"
   ],
   "scripts": {
-    "rename": "bash -c 'for file in *.js; do mv $file \"${file%.js}.$0.js\"; done'",
-    "build": "tsc --module commonjs && npm run rename -- cjs && tsc --declaration",
+    "rename": "bash -c 'for file in *.js; do mv $file \"${file%.js}.cjs\"; done'",
+    "build": "tsc --module commonjs && npm run rename && tsc --declaration",
     "prebuild": "rm -r metadata stylesheet.json index* locale* types* styles* || true",
-    "postbuild": "cp resources/stylesheet.json stylesheet.json",
-    "test": "jest --config jestconfig.json"
+    "postbuild": "cp resources/stylesheet.json stylesheet.json && node scripts/fix-build.mjs",
+    "test": "jest --config jestconfig.json && node scripts/smoke-test.mjs && node scripts/smoke-test.cjs"
   },
   "license": "MIT",
   "peerDependencies": {
